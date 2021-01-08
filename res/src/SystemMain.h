@@ -33,12 +33,13 @@ public:
 	/// メッセージループ
 	void MsgLoop();
 
-
 private:
 	/// インスタンスハンドル
 	HINSTANCE m_hInst;
 	/// ウィンドウハンドル
 	HWND m_hWnd;
+	/// Mutex
+	HANDLE m_hMutex;
 
 	/// IDirect3D9コンポーネント
 	LPDIRECT3D9 m_pD3D;

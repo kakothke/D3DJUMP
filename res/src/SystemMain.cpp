@@ -25,7 +25,21 @@ SystemMain::SystemMain(HINSTANCE hInst)
 /// </summary>
 SystemMain::~SystemMain()
 {
-	ReleaseDirect3D();
+	if (m_pD3D) {
+		// Direct3Dの開放
+		ReleaseDirect3D();
+	}
+
+	if (m_hWnd) {
+		// ウィンドウの破棄
+		UnregisterClass(Define::Window_Name, m_hInst);
+	}
+
+	if (m_hMutex) {
+		// Mutexの開放
+		ReleaseMutex(m_hMutex);
+		CloseHandle(m_hMutex);
+	}
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -35,14 +49,17 @@ SystemMain::~SystemMain()
 LRESULT SystemMain::MyWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (iMsg) {
-	case WM_KEYDOWN: // キーを押した時
+	case WM_KEYDOWN:
+		// キーを押した時
 		switch ((char)wParam) {
-		case VK_ESCAPE: // ESC
+		case VK_ESCAPE:
+			// ESC
 			PostQuitMessage(0);
 			break;
 		}
 		break;
-	case WM_DESTROY: // 閉じるボタンをクリックした時
+	case WM_DESTROY:
+		// 閉じるボタンをクリックした時
 		PostQuitMessage(0);
 		break;
 	}
@@ -58,6 +75,7 @@ bool SystemMain::Init()
 {
 	// 多重起動のチェック
 	if (FAILED(CheckMultiple())) {
+		// 既に起動されているアプリケーションを前面に表示して終了
 		return false;
 	}
 
@@ -72,6 +90,10 @@ bool SystemMain::Init()
 		MessageBox(NULL, TEXT("Direct3Dの初期化に失敗しました。"), TEXT("ERROR"), MB_OK | MB_ICONSTOP);
 		return false;
 	}
+
+	// ウインドウの表示
+	ShowWindow(m_hWnd, SW_SHOW);
+	UpdateWindow(m_hWnd);
 
 	return true;
 }
@@ -103,24 +125,19 @@ void SystemMain::MsgLoop()
 /// </summary>
 HRESULT SystemMain::CheckMultiple()
 {
-	HANDLE hMutex = CreateMutex(NULL, FALSE, Define::Window_Name);
+	m_hMutex = CreateMutex(NULL, FALSE, Define::Window_Name);
 	DWORD theErr = GetLastError();
 	if (theErr == ERROR_ALREADY_EXISTS)
 	{
 		// 既に起動しているウィンドウを前面表示する
-		m_hWnd = FindWindow(Define::Window_Name, NULL);
-		if (IsIconic(m_hWnd))
+		HWND hWnd = FindWindow(Define::Window_Name, NULL);
+		if (IsIconic(hWnd))
 		{
 			// メイン・ウィンドウが最小化されていれば元に戻す
-			ShowWindowAsync(m_hWnd, SW_RESTORE);
+			ShowWindowAsync(hWnd, SW_RESTORE);
 		}
-		SetForegroundWindow(m_hWnd);
-		
-		// Mutexの開放
-		if (hMutex) {
-			ReleaseMutex(hMutex);
-			CloseHandle(hMutex);
-		}
+		SetForegroundWindow(hWnd);
+
 		return E_FAIL;
 	}
 
@@ -162,7 +179,7 @@ HRESULT SystemMain::InitWindow()
 			CW_USEDEFAULT,
 			NULL,
 			NULL,
-			m_hInst,
+			wc.hInstance,
 			NULL
 		);
 
@@ -188,10 +205,6 @@ HRESULT SystemMain::InitWindow()
 	if (!m_hWnd) {
 		return E_FAIL;
 	}
-
-	// ウインドウの表示
-	ShowWindow(m_hWnd, SW_SHOW);
-	UpdateWindow(m_hWnd);
 
 	return S_OK;
 }
