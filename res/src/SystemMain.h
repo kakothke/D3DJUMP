@@ -47,11 +47,13 @@ private:
 	/// レンダリングデバイス
 	LPDIRECT3DDEVICE9 m_pD3DDevice;
 
+	/// 多重起動のチェック
+	HRESULT CheckMultiple();
 	/// ウィンドウ初期化
 	HRESULT InitWindow();
-
 	/// Direct3D初期化
 	HRESULT	InitDirect3D();
+
 	/// Direct3Dの開放
 	void ReleaseDirect3D();
 

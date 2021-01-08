@@ -56,6 +56,11 @@ LRESULT SystemMain::MyWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam
 /// </summary>
 bool SystemMain::Init()
 {
+	// 多重起動のチェック
+	if (FAILED(CheckMultiple())) {
+		return false;
+	}
+
 	// ウィンドウ初期化
 	if (FAILED(InitWindow())) {
 		MessageBox(NULL, TEXT("ウィンドウの初期化に失敗しました。"), TEXT("ERROR"), MB_OK | MB_ICONHAND);
@@ -90,6 +95,36 @@ void SystemMain::MsgLoop()
 		}
 	}
 	// アプリケーションの終了
+}
+
+//-------------------------------------------------------------------------------------------------
+/// <summary>
+/// 多重起動のチェック
+/// </summary>
+HRESULT SystemMain::CheckMultiple()
+{
+	HANDLE hMutex = CreateMutex(NULL, FALSE, Define::Window_Name);
+	DWORD theErr = GetLastError();
+	if (theErr == ERROR_ALREADY_EXISTS)
+	{
+		// 既に起動しているウィンドウを前面表示する
+		m_hWnd = FindWindow(Define::Window_Name, NULL);
+		if (IsIconic(m_hWnd))
+		{
+			// メイン・ウィンドウが最小化されていれば元に戻す
+			ShowWindowAsync(m_hWnd, SW_RESTORE);
+		}
+		SetForegroundWindow(m_hWnd);
+		
+		// Mutexの開放
+		if (hMutex) {
+			ReleaseMutex(hMutex);
+			CloseHandle(hMutex);
+		}
+		return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -138,6 +173,7 @@ HRESULT SystemMain::InitWindow()
 	int sx = ((rw.right - rw.left) - (rc.right - rc.left)) + Define::Window_Width;  // 非クライアント領域を加算したサイズ
 	int sy = ((rw.bottom - rw.top) - (rc.bottom - rc.top)) + Define::Window_Height; // ''
 
+	// 移動
 	SetWindowPos(
 		m_hWnd,
 		NULL,
