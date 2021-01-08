@@ -1,13 +1,30 @@
 #pragma once
 
 //-------------------------------------------------------------------------------------------------
+#include "d3d9.h"
+#include "d3dx9.h"
+
+//-------------------------------------------------------------------------------------------------
 namespace MyGame {
 
 /// メインループクラス
 class MainLoop
 {
 public:
-	//MainLoop();
+	/// コンストラクタ
+	MainLoop(LPDIRECT3DDEVICE9);
+	/// デストラクタ
+	~MainLoop();
+
+	/// アプリケーションのメインループ
+	bool Loop();
+
+private:
+	/// レンダリングデバイス
+	LPDIRECT3DDEVICE9 m_pD3DDevice;
+
+	/// 描画
+	void Render();
 
 };
 

@@ -58,9 +58,6 @@ private:
 	/// Direct3D‚ÌŠJ•ú
 	void ReleaseDirect3D();
 
-	/// •`‰æ
-	void Render();
-
 };
 
 } // namespace
