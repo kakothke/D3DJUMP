@@ -121,15 +121,34 @@ HRESULT SystemMain::InitWindow()
 			Define::Window_Name,
 			Define::Window_Name,
 			WS_OVERLAPPEDWINDOW & ~(WS_THICKFRAME | WS_MAXIMIZEBOX), // 最大化ボタンとサイズ変更を無効
-			(GetSystemMetrics(SM_CXSCREEN) - Define::Window_Width) / 2,  // ディスプレイの中央に表示（x）
-			(GetSystemMetrics(SM_CYSCREEN) - Define::Window_Height) / 2, // ディスプレイの中央に表示（y）
-			Define::Window_Width,
-			Define::Window_Height,
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
 			NULL,
 			NULL,
 			m_hInst,
 			NULL
 		);
+
+	// 作成したウィンドウのサイズと位置を変更
+	RECT rw, rc;
+	GetWindowRect(m_hWnd, &rw);
+	GetClientRect(m_hWnd, &rc);
+	int sx = ((rw.right - rw.left) - (rc.right - rc.left)) + Define::Window_Width;  // 非クライアント領域を加算したサイズ
+	int sy = ((rw.bottom - rw.top) - (rc.bottom - rc.top)) + Define::Window_Height; // ''
+
+	SetWindowPos(
+		m_hWnd,
+		NULL,
+		(GetSystemMetrics(SM_CXSCREEN) - sx) / 2, // モニターの中央に表示
+		(GetSystemMetrics(SM_CYSCREEN) - sy) / 2, // ''
+		sx,
+		sy,
+		SWP_NOZORDER | SWP_NOOWNERZORDER
+	);
+
+	// ウィンドウの作成に成功しているかをチェック
 	if (!m_hWnd) {
 		return E_FAIL;
 	}
