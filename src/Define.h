@@ -11,11 +11,13 @@ class Define final
 {
 public:
     /// ウィンドウサイズ横
-    const static INT Window_Width;
+    const static INT WindowWidth;
     /// ウィンドウサイズ縦
-    const static INT Window_Height;
+    const static INT WindowHeight;
     /// ウィンドウ名
-    const static LPCWSTR Window_Name;
+    const static LPCWSTR WindowName;
+    /// フルスクリーンモードフラグ
+    const static BOOL FullScreenMode;
 
 };
 

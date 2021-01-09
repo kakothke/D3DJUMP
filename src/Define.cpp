@@ -5,8 +5,9 @@ namespace MyGame {
 
 //-------------------------------------------------------------------------------------------------
 /// ウィンドウ関連
-const INT Define::Window_Width = 1280;
-const INT Define::Window_Height = 720;
-const LPCWSTR Define::Window_Name = TEXT("まみむめも");
+const INT Define::WindowWidth = 1280;
+const INT Define::WindowHeight = 720;
+const LPCWSTR Define::WindowName = TEXT("まみむめも");
+const BOOL Define::FullScreenMode = FALSE;
 
 } // namespace
