@@ -5,7 +5,7 @@
 #include <d3d9.h>
 
 //-------------------------------------------------------------------------------------------------
-namespace MyGame {
+namespace myGame {
 
 /// 定義
 class Define
@@ -23,8 +23,8 @@ public:
 
     /// @name DirectX設定
     //@{
-    /// フルスクリーン
-    const static bool FullScreenMode = false;
+    /// ウィンドウモードにするか
+    const static bool WindowModeFlag = true;
     /// 画面クリア色
     const static D3DCOLOR ClearColor;
     //@}

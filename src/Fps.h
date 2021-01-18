@@ -7,7 +7,7 @@
 #pragma comment(lib,"winmm.lib")
 
 //-------------------------------------------------------------------------------------------------
-namespace MyGame {
+namespace myGame {
 
 /// fpsÇêßå‰Ç∑ÇÈ
 class Fps

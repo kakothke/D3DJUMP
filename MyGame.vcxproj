@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Define.cpp" />
+    <ClCompile Include="src\DirectX9.cpp" />
     <ClCompile Include="src\Fps.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MainLoop.cpp" />
@@ -28,9 +29,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\SystemMain.cpp" />
+    <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Define.h" />
+    <ClInclude Include="src\DirectX9.h" />
     <ClInclude Include="src\Fps.h" />
     <ClInclude Include="src\Macros.h" />
     <ClInclude Include="src\MainLoop.h" />
@@ -39,6 +42,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\SystemMain.h" />
+    <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -40,6 +40,12 @@
     <ClCompile Include="src\Mesh.cpp">
       <Filter>MyGame\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="src\DirectX9.cpp">
+      <Filter>MyGame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window.cpp">
+      <Filter>MyGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\SystemMain.h">
@@ -62,6 +68,12 @@
     </ClInclude>
     <ClInclude Include="src\Macros.h">
       <Filter>MyGame\Comon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DirectX9.h">
+      <Filter>MyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Window.h">
+      <Filter>MyGame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
