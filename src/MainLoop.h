@@ -7,25 +7,35 @@
 //-------------------------------------------------------------------------------------------------
 namespace MyGame {
 
-/// メインループクラス
+/// メインループ
 class MainLoop
 {
 public:
-	/// コンストラクタ
+	/// @name コンストラクタ/デストラクタ
+	//@{
 	MainLoop(LPDIRECT3DDEVICE9);
-	/// デストラクタ
 	~MainLoop();
+	//@}
 
-	/// アプリケーションのメインループ
-	bool Loop();
+	/// @name ゲームのメインループ
+	//@{
+	bool loop();
+	//@}
 
 private:
+	/// @name 内部実装
+	//@{
+	/// 描画
+	void draw();
+	//@}
+
+	/// @name プライベートメンバ変数
+	//@{
 	/// レンダリングデバイス
 	LPDIRECT3DDEVICE9 m_pD3DDevice;
-
-	/// 描画
-	void Render();
+	//@}
 
 };
 
 } // namespace
+// EOF

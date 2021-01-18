@@ -1,44 +1,39 @@
 #include "MainLoop.h"
 
 //-------------------------------------------------------------------------------------------------
+#include "Define.h"
+
+//-------------------------------------------------------------------------------------------------
 namespace MyGame {
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
 /// コンストラクタ
-/// </summary>
 MainLoop::MainLoop(LPDIRECT3DDEVICE9 a_pD3DDevice)
 	: m_pD3DDevice(a_pD3DDevice)
 {
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
 /// デストラクタ
-/// </summary>
 MainLoop::~MainLoop()
 {
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
 /// アプリケーションのメインループ
-/// </summary>
-/// <returns> falseを返すとメインループを抜けてアプリケーションが終了する </returns>
-bool MainLoop::Loop()
+/// @return falseを返すとメインループを抜けてアプリケーションが終了する
+bool MainLoop::loop()
 {
-	Render();
+	draw();
 	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
 /// 描画
-/// </summary>
-void MainLoop::Render()
+void MainLoop::draw()
 {
 	// Zバッファとバックバッファをクリア
-	m_pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 64), 1.0f, 0);
+	m_pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, Define::ClearColor, 1.0f, 0);
 
 	// 描画開始
 	if (SUCCEEDED(m_pD3DDevice->BeginScene())) {
@@ -51,3 +46,4 @@ void MainLoop::Render()
 }
 
 } // namespace
+// EOF

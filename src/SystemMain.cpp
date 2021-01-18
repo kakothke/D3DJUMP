@@ -8,30 +8,27 @@
 namespace MyGame {
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
 /// コンストラクタ
-/// </summary>
+/// @param hInst インスタンスハンドル
 SystemMain::SystemMain(HINSTANCE hInst)
 	: m_hInst(hInst)
-	, m_hWnd()
 	, m_pD3D(NULL)
-	, m_D3DPParams()
 	, m_pD3DDevice(NULL)
 {
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
 /// デストラクタ
-/// </summary>
+/// @detail 各種オブジェクトを破棄する
 SystemMain::~SystemMain()
 {
 	if (m_pD3D) {
 		// Direct3Dの開放
-		ReleaseDirect3D();
+		releaseDirect3D();
 	}
 	if (m_hWnd) {
 		// ウィンドウの破棄
+		DestroyWindow(m_hWnd);
 		UnregisterClass(Define::WindowName, m_hInst);
 	}
 	if (m_hMutex) {
@@ -42,10 +39,9 @@ SystemMain::~SystemMain()
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
-/// ウィンドウプロシージャー
-/// </summary>
-LRESULT SystemMain::MyWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+/// アプリ内のウィンドウプロシージャー
+/// @detail 本物のWndProcから呼び出されている
+LRESULT SystemMain::myWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (iMsg) {
 	case WM_KEYDOWN:
@@ -67,28 +63,26 @@ LRESULT SystemMain::MyWndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
 /// 初期化処理
-/// </summary>
-bool SystemMain::Init()
+bool SystemMain::initialize()
 {
 	// 多重起動のチェック
-	if (FAILED(CheckMultiple())) {
+	if (!checkMultiple()) {
 		// 既に起動されているアプリケーションを前面に表示して終了
 		return false;
 	}
 	// ウィンドウ初期化
-	if (FAILED(InitWindow())) {
+	if (!initializeWindow()) {
 		MessageBox(NULL, TEXT("ウィンドウの初期化に失敗しました。"), TEXT("ERROR"), MB_OK | MB_ICONHAND);
 		return false;
 	}
 	// Direct3D初期化
-	if (FAILED(InitDirect3D())) {
+	if (!initializeDirect3D()) {
 		MessageBox(NULL, TEXT("Direct3Dの初期化に失敗しました。"), TEXT("ERROR"), MB_OK | MB_ICONSTOP);
 		return false;
 	}
 
-	// ウインドウを表示
+	// 全ての初期化に成功したらウインドウを表示
 	ShowWindow(m_hWnd, SW_SHOW);
 	UpdateWindow(m_hWnd);
 
@@ -96,10 +90,8 @@ bool SystemMain::Init()
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
 /// メッセージループ
-/// </summary>
-void SystemMain::MsgLoop()
+void SystemMain::msgLoop()
 {
 	MainLoop mainLoop(m_pD3DDevice);
 
@@ -112,19 +104,19 @@ void SystemMain::MsgLoop()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		} else {
-			// アプリケーションのメインループ
-			if (!mainLoop.Loop()) {
+			// ゲームのメインループ
+			if (!mainLoop.loop()) {
 				break;
 			}
+			// fpsを調整する
+			mFps.adjust();
 		}
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
-/// 多重起動のチェック
-/// </summary>
-HRESULT SystemMain::CheckMultiple()
+/// 多重起動をチェックする
+bool SystemMain::checkMultiple()
 {
 	m_hMutex = CreateMutex(NULL, FALSE, Define::WindowName);
 	DWORD theErr = GetLastError();
@@ -139,17 +131,15 @@ HRESULT SystemMain::CheckMultiple()
 		}
 		SetForegroundWindow(hWnd);
 
-		return E_FAIL;
+		return false;
 	}
 
-	return S_OK;
+	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
-/// ウィンドウ初期化
-/// </summary>
-HRESULT SystemMain::InitWindow()
+/// ウィンドウを初期化する
+bool SystemMain::initializeWindow()
 {
 	// ウィンドウの定義
 	WNDCLASSEX  wc;
@@ -180,51 +170,51 @@ HRESULT SystemMain::InitWindow()
 			CW_USEDEFAULT,
 			NULL,
 			NULL,
-			wc.hInstance,
+			m_hInst,
 			NULL
 		);
 
 	// 作成したウィンドウのサイズと位置を変更
-	RECT rw, rc;
-	GetWindowRect(m_hWnd, &rw);
-	GetClientRect(m_hWnd, &rc);
-	int sx = ((rw.right - rw.left) - (rc.right - rc.left)) + Define::WindowWidth;  // 非クライアント領域を加算したサイズ
-	int sy = ((rw.bottom - rw.top) - (rc.bottom - rc.top)) + Define::WindowHeight; // ''
+	RECT wndRect, cltRect;
+	GetWindowRect(m_hWnd, &wndRect);
+	GetClientRect(m_hWnd, &cltRect);
+
+	// 非クライアント領域を加算したサイズを計算
+	int resizeW = ((wndRect.right - wndRect.left) - (cltRect.right - cltRect.left)) + Define::WindowWidth;
+	int resizeH = ((wndRect.bottom - wndRect.top) - (cltRect.bottom - cltRect.top)) + Define::WindowHeight;
 
 	// 移動
 	SetWindowPos(
 		m_hWnd,
 		NULL,
-		(GetSystemMetrics(SM_CXSCREEN) - sx) / 2, // モニターの中央に表示
-		(GetSystemMetrics(SM_CYSCREEN) - sy) / 2, // ''
-		sx,
-		sy,
+		(GetSystemMetrics(SM_CXSCREEN) - resizeW) / 2, // モニターの中央に表示
+		(GetSystemMetrics(SM_CYSCREEN) - resizeH) / 2, // ''
+		resizeW,
+		resizeH,
 		SWP_NOZORDER | SWP_NOOWNERZORDER
 	);
 
 	// ウィンドウの作成に成功しているかをチェック
 	if (!m_hWnd) {
-		return E_FAIL;
+		return false;
 	}
 
-	return S_OK;
+	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
-/// Direct3D初期化
-/// </summary>
-HRESULT SystemMain::InitDirect3D()
+/// Direct3Dを初期化する
+bool SystemMain::initializeDirect3D()
 {
 	// D3Dオブジェクトの生成
 	if (NULL == (m_pD3D = Direct3DCreate9(D3D_SDK_VERSION))) {
-		return (E_FAIL);
+		return false;
 	}
 
-	// PRESENTパラメータをゼロクリア
-	ZeroMemory(&m_D3DPParams, sizeof(D3DPRESENT_PARAMETERS));
-
 	// プレゼンテーションパラメータ
+	//D3DPRESENT_PARAMETERS m_D3DPParams;
+	ZeroMemory(&mD3DPParams, sizeof(D3DPRESENT_PARAMETERS));
+
 	if (Define::FullScreenMode)
 	{
 		// 現在のプライマリディスプレイアダプタのモードを取得する
@@ -233,63 +223,54 @@ HRESULT SystemMain::InitDirect3D()
 		if (FAILED(m_pD3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &displayMode)))
 		{
 			MessageBox(NULL, TEXT("ディスプレイモードの取得に失敗しました"), Define::WindowName, MB_OK | MB_ICONSTOP);
-			return(E_FAIL);
+			return false;
 		}
 
 		// バックバッファの高さ
-		m_D3DPParams.BackBufferHeight = displayMode.Height;
+		mD3DPParams.BackBufferHeight = displayMode.Height;
 		// バックバッファの幅
-		m_D3DPParams.BackBufferWidth = displayMode.Width;
+		mD3DPParams.BackBufferWidth = displayMode.Width;
 		// バックバッファのフォーマット
-		m_D3DPParams.BackBufferFormat = displayMode.Format;
+		mD3DPParams.BackBufferFormat = displayMode.Format;
 		// フルスクリーンモード
-		m_D3DPParams.Windowed = FALSE;
+		mD3DPParams.Windowed = FALSE;
 	} else {
 		// フォーマットは今の画面モードに従う
-		m_D3DPParams.BackBufferFormat = D3DFMT_UNKNOWN;
+		mD3DPParams.BackBufferFormat = D3DFMT_UNKNOWN;
 		// ウィンドウモード
-		m_D3DPParams.Windowed = TRUE;
+		mD3DPParams.Windowed = TRUE;
 	}
 
-	// 共通パラメータ
 	// バックバッファの数
-	m_D3DPParams.BackBufferCount = 1;
-
+	mD3DPParams.BackBufferCount = 1;
 	// マルチサンプリングは行わない
-	m_D3DPParams.MultiSampleType = D3DMULTISAMPLE_NONE;
-	m_D3DPParams.MultiSampleQuality = 0;
-
+	mD3DPParams.MultiSampleType = D3DMULTISAMPLE_NONE;
+	mD3DPParams.MultiSampleQuality = 0;
 	// Direct3Dにスワップエフェクトを任せる
-	m_D3DPParams.SwapEffect = D3DSWAPEFFECT_DISCARD;
-
+	mD3DPParams.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	// Direct3Dに深度バッファの管理を任せる
-	m_D3DPParams.EnableAutoDepthStencil = TRUE;
+	mD3DPParams.EnableAutoDepthStencil = TRUE;
 	// 深度バッファのフォーマット（通常はこの値で問題ない）
-	m_D3DPParams.AutoDepthStencilFormat = D3DFMT_D16;
-
+	mD3DPParams.AutoDepthStencilFormat = D3DFMT_D16;
 	// カバーウィンドウ＝アプリケーションのウィンドウ
-	m_D3DPParams.hDeviceWindow = m_hWnd;
-
+	mD3DPParams.hDeviceWindow = m_hWnd;
 	// フラグは使わない
-	m_D3DPParams.Flags = 0;
-
+	mD3DPParams.Flags = 0;
 	// 今のリフレッシュレートをそのまま使う
-	m_D3DPParams.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
+	mD3DPParams.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
+	// モニタの垂直回帰を待たない
+	mD3DPParams.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
-	// モニタの垂直回帰を待つ
-	m_D3DPParams.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
-
-	// D3Dデバイスの生成
-	// HAL / HARDWARE
-	if (FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &m_D3DPParams, &m_pD3DDevice)))
+	// デバイスの生成( HAL / HARDWARE )
+	if (FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &mD3DPParams, &m_pD3DDevice)))
 	{
-		// HAL / SOFTWARE
-		if (FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &m_D3DPParams, &m_pD3DDevice)))
+		// デバイスの生成( HAL / SOFTWARE )
+		if (FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &mD3DPParams, &m_pD3DDevice)))
 		{
-			// REF / SOFTWARE
-			if (FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_REF, m_hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &m_D3DPParams, &m_pD3DDevice)))
+			// デバイスの生成( REF / SOFTWARE )
+			if (FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_REF, m_hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &mD3DPParams, &m_pD3DDevice)))
 			{
-				return(E_FAIL);
+				return false;
 			}
 		}
 	}
@@ -321,20 +302,16 @@ HRESULT SystemMain::InitDirect3D()
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
 
-	return (S_OK);
+	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
-/// Direct3Dの開放
-/// </summary>
-void SystemMain::ReleaseDirect3D()
+/// Direct3Dを開放する
+void SystemMain::releaseDirect3D()
 {
-	m_pD3DDevice->Release();
-	m_pD3DDevice = NULL;
-
-	m_pD3D->Release();
-	m_pD3D = NULL;
+	SAFE_RELEASE(m_pD3DDevice);
+	SAFE_RELEASE(m_pD3D);
 }
 
 } // namespace
+// EOF

@@ -1,21 +1,18 @@
 #include "SystemMain.h"
 
 //-------------------------------------------------------------------------------------------------
-using namespace MyGame;
+namespace {
+MyGame::SystemMain* systemMain = NULL;
+}
 
 //-------------------------------------------------------------------------------------------------
-static SystemMain* systemMain = NULL;
-
-//-------------------------------------------------------------------------------------------------
-/// <summary>
-/// アプリケーションのエントリー関数
-/// </summary>
+/// エントリー関数
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, INT nCmdShow)
 {
-	systemMain = new SystemMain(hInst);
+	systemMain = new MyGame::SystemMain(hInst);
 
-	if (systemMain->Init()) {
-		systemMain->MsgLoop();
+	if (systemMain->initialize()) {
+		systemMain->msgLoop();
 	}
 	delete systemMain;
 
@@ -23,10 +20,11 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, INT nC
 }
 
 //-------------------------------------------------------------------------------------------------
-/// <summary>
-/// OSから見たウィンドウプロシージャー（実際の処理はSystemMainクラスのMyWndProcで処理）
-/// </summary>
+/// OSから見たウィンドウプロシージャー
+/// @detail 実際の処理はSystemMainクラスのMyWndProcで行う
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	return systemMain->MyWndProc(hWnd, uMsg, wParam, lParam);
+	return systemMain->myWndProc(hWnd, uMsg, wParam, lParam);
 }
+
+// EOF
