@@ -10,7 +10,6 @@ namespace myGame {
 /// コンストラクタ
 SystemMain::SystemMain()
 	: mWindow()
-	, mDirectX9()
 	, mFps()
 {
 }
@@ -23,10 +22,13 @@ bool SystemMain::initialize(HINSTANCE a_hInst)
 	if (!mWindow.initialize(a_hInst)) {
 		return false;
 	}
-	// DirectX9初期化
-	if (!mDirectX9.initialize(mWindow.hWnd())) {
+	// Direct3D9初期化
+	if (!Direct3D9::getInst()->initialize(mWindow.hWnd())) {
 		return false;
 	}
+	// ウィンドウを表示
+	ShowWindow(mWindow.hWnd(), SW_SHOW);
+	UpdateWindow(mWindow.hWnd());
 
 	return true;
 }
@@ -35,7 +37,7 @@ bool SystemMain::initialize(HINSTANCE a_hInst)
 /// メッセージループ
 void SystemMain::msgLoop()
 {
-	MainLoop mainLoop(mDirectX9.device());
+	MainLoop mainLoop;
 
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));

@@ -1,30 +1,36 @@
-#include "DirectX9.h"
+#include "Direct3D9.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
 /// コンストラクタ
-DirectX9::DirectX9()
+Direct3D9::Direct3D9()
 	: mD3DInterface(NULL)
 	, mD3DDevice(NULL)
+	, mParams()
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 /// デストラクタ
-DirectX9::~DirectX9()
+Direct3D9::~Direct3D9()
 {
-	SAFE_RELEASE(mD3DDevice);
-	SAFE_RELEASE(mD3DInterface);
+	if (mD3DDevice) {
+		SAFE_RELEASE(mD3DDevice);
+	}
+	if (mD3DInterface) {
+		SAFE_RELEASE(mD3DInterface);
+	}
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 初期化処理
-bool DirectX9::initialize(HWND a_hWnd)
+bool Direct3D9::initialize(const HWND& a_hWnd)
 {
-	D3DPRESENT_PARAMETERS presentParams;
-	ZeroMemory(&presentParams, sizeof(D3DPRESENT_PARAMETERS));
+	m_hWnd = a_hWnd;
+
+	ZeroMemory(&mParams, sizeof(D3DPRESENT_PARAMETERS));
 
 	// インターフェースの作成
 	if (!createInterface()) {
@@ -32,17 +38,17 @@ bool DirectX9::initialize(HWND a_hWnd)
 		return false;
 	}
 	// プレゼンテーションパラメーターの設定
-	if (!setupPresentParams(presentParams, a_hWnd)) {
+	if (!setupPresentParams()) {
 		MessageBox(NULL, TEXT("プレゼンテーションパラメーターの設定に失敗しました。"), TEXT("D3D9_ERROR"), MB_OK | MB_ICONSTOP);
 		return false;
 	}
 	// デバイスの作成
-	if (!createDeveice(presentParams, a_hWnd)) {
+	if (!createDeveice()) {
 		MessageBox(NULL, TEXT("デバイスの作成に失敗しました。"), TEXT("D3D9_ERROR"), MB_OK | MB_ICONSTOP);
 		return false;
 	}
 	// ビューポートの設定
-	if (!setupViewPort(presentParams)) {
+	if (!setupViewPort()) {
 		MessageBox(NULL, TEXT("ビューポートの設定に失敗しました。"), TEXT("D3D9_ERROR"), MB_OK | MB_ICONSTOP);
 		return false;
 	}
@@ -62,14 +68,21 @@ bool DirectX9::initialize(HWND a_hWnd)
 
 //-------------------------------------------------------------------------------------------------
 /// 作成したデバイスを返す
-LPDIRECT3DDEVICE9 DirectX9::device() const
+LPDIRECT3DDEVICE9 Direct3D9::device() const
 {
 	return mD3DDevice;
 }
 
 //-------------------------------------------------------------------------------------------------
+/// 作成したプレゼンテーションパラメータを返す
+const D3DPRESENT_PARAMETERS& Direct3D9::params()
+{
+	return mParams;
+}
+
+//-------------------------------------------------------------------------------------------------
 /// インターフェースの作成
-bool DirectX9::createInterface()
+bool Direct3D9::createInterface()
 {
 	if (NULL == (mD3DInterface = Direct3DCreate9(D3D_SDK_VERSION))) {
 		return false;
@@ -80,96 +93,88 @@ bool DirectX9::createInterface()
 
 //-------------------------------------------------------------------------------------------------
 /// プレゼンテーションパラメーターの設定
-bool DirectX9::setupPresentParams(D3DPRESENT_PARAMETERS& aPresentParams, HWND a_hWnd)
+bool Direct3D9::setupPresentParams()
 {
 	if (Define::WindowModeFlag)
 	{
 		// フォーマットは今の画面モードに従う
-		aPresentParams.BackBufferFormat = D3DFMT_UNKNOWN;
+		mParams.BackBufferFormat = D3DFMT_UNKNOWN;
 		// ウィンドウモード
-		aPresentParams.Windowed = TRUE;
+		mParams.Windowed = TRUE;
 	} else {
 		// 現在のプライマリディスプレイアダプタのモードを取得する
 		D3DDISPLAYMODE displayMode;
 
 		// ディスプレイモード取得
-		if (FAILED(mD3DInterface->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &displayMode)))
-		{
+		if (FAILED(mD3DInterface->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &displayMode))) {
 			MessageBox(NULL, TEXT("ディスプレイモードの取得に失敗しました"), Define::WindowName, MB_OK | MB_ICONSTOP);
 			return false;
 		}
 
 		// バックバッファの高さ
-		aPresentParams.BackBufferHeight = displayMode.Height;
+		mParams.BackBufferHeight = displayMode.Height;
 		// バックバッファの幅
-		aPresentParams.BackBufferWidth = displayMode.Width;
+		mParams.BackBufferWidth = displayMode.Width;
 		// バックバッファのフォーマット
-		aPresentParams.BackBufferFormat = displayMode.Format;
+		mParams.BackBufferFormat = displayMode.Format;
 		// フルスクリーンモード
-		aPresentParams.Windowed = FALSE;
+		mParams.Windowed = FALSE;
 	}
 
 	// バックバッファの数
-	aPresentParams.BackBufferCount = 1;
+	mParams.BackBufferCount = 1;
 	// マルチサンプリングは行わない
-	aPresentParams.MultiSampleType = D3DMULTISAMPLE_NONE;
-	aPresentParams.MultiSampleQuality = 0;
+	mParams.MultiSampleType = D3DMULTISAMPLE_NONE;
+	mParams.MultiSampleQuality = 0;
 	// Direct3Dにスワップエフェクトを任せる
-	aPresentParams.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	mParams.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	// Direct3Dに深度バッファの管理を任せる
-	aPresentParams.EnableAutoDepthStencil = TRUE;
+	mParams.EnableAutoDepthStencil = TRUE;
 	// 深度バッファのフォーマット（通常はこの値で問題ない）
-	aPresentParams.AutoDepthStencilFormat = D3DFMT_D16;
+	mParams.AutoDepthStencilFormat = D3DFMT_D16;
 	// カバーウィンドウ＝アプリケーションのウィンドウ
-	aPresentParams.hDeviceWindow = a_hWnd;
+	mParams.hDeviceWindow = m_hWnd;
 	// フラグは使わない
-	aPresentParams.Flags = 0;
+	mParams.Flags = 0;
 	// 今のリフレッシュレートをそのまま使う
-	aPresentParams.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
+	mParams.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
 	// モニタの垂直回帰を待たない
-	aPresentParams.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+	mParams.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+
+	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
 /// デバイスの作成
-bool DirectX9::createDeveice(D3DPRESENT_PARAMETERS& aPresentParams, HWND a_hWnd)
+bool Direct3D9::createDeveice()
 {
 	// デバイスの生成( HAL / HARDWARE )
-	if (FAILED(
-		mD3DInterface->CreateDevice(
+	if (FAILED(mD3DInterface->CreateDevice(
+		D3DADAPTER_DEFAULT,
+		D3DDEVTYPE_HAL,
+		m_hWnd,
+		D3DCREATE_HARDWARE_VERTEXPROCESSING,
+		&mParams,
+		&mD3DDevice
+	))) {
+		// デバイスの生成( HAL / SOFTWARE )
+		if (FAILED(mD3DInterface->CreateDevice(
 			D3DADAPTER_DEFAULT,
 			D3DDEVTYPE_HAL,
-			a_hWnd,
-			D3DCREATE_HARDWARE_VERTEXPROCESSING,
-			&aPresentParams,
+			m_hWnd,
+			D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+			&mParams,
 			&mD3DDevice
-		)
-	))
-	{
-		// デバイスの生成( HAL / SOFTWARE )
-		if (FAILED(
-			mD3DInterface->CreateDevice(
-				D3DADAPTER_DEFAULT,
-				D3DDEVTYPE_HAL,
-				a_hWnd,
-				D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-				&aPresentParams,
-				&mD3DDevice
-			)
-		))
-		{
+		))) {
 			// デバイスの生成( REF / SOFTWARE )
-			if (FAILED(
-				mD3DInterface->CreateDevice(
-					D3DADAPTER_DEFAULT,
-					D3DDEVTYPE_REF,
-					a_hWnd,
-					D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-					&aPresentParams,
-					&mD3DDevice
-				)
-			))
-			{
+			if (FAILED(mD3DInterface->CreateDevice(
+				D3DADAPTER_DEFAULT,
+				D3DDEVTYPE_REF,
+				m_hWnd,
+				D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+				&mParams,
+				&mD3DDevice
+			))) {
 				return false;
 			}
 		}
@@ -180,15 +185,34 @@ bool DirectX9::createDeveice(D3DPRESENT_PARAMETERS& aPresentParams, HWND a_hWnd)
 
 //-------------------------------------------------------------------------------------------------
 /// ビューポートの設定
-bool DirectX9::setupViewPort(D3DPRESENT_PARAMETERS& aPresentParams)
+bool Direct3D9::setupViewPort()
 {
+	// ビューポートパラメータ
+	D3DVIEWPORT9 view_port;
+
+	// ビューポートの左上座標
+	view_port.X = 0;
+	view_port.Y = 0;
+	// ビューポートの幅
+	view_port.Width = mParams.BackBufferWidth;
+	// ビューポートの高さ
+	view_port.Height = mParams.BackBufferHeight;
+	// ビューポート深度設定
+	view_port.MinZ = 0.0f;
+	view_port.MaxZ = 1.0f;
+
+	// ビューポート設定
+	if (FAILED(mD3DDevice->SetViewport(&view_port)))
+	{
+		return false;
+	}
 
 	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
 /// フォントデバイスの作成
-bool DirectX9::createFontDevice()
+bool Direct3D9::createFontDevice()
 {
 
 	return true;
@@ -196,7 +220,7 @@ bool DirectX9::createFontDevice()
 
 //-------------------------------------------------------------------------------------------------
 /// まだ理解しきれていない部分の設定
-bool DirectX9::setupEtc()
+bool Direct3D9::setupEtc()
 {
 	// 後で変更しないレンダリングステートの設定
 	// Zバッファを有効にする

@@ -5,16 +5,21 @@
 #include "d3dx9.h"
 
 //-------------------------------------------------------------------------------------------------
+// テスト用
+#include "TestMan.h"
+#include "Camera.h"
+#include "Light.h"
+
+//-------------------------------------------------------------------------------------------------
 namespace myGame {
 
 /// メインループ
 class MainLoop
 {
 public:
-	/// @name コンストラクタ/デストラクタ
+	/// @name コンストラクタ
 	//@{
-	MainLoop(LPDIRECT3DDEVICE9);
-	~MainLoop();
+	MainLoop();
 	//@}
 
 	/// @name ゲームのメインループ
@@ -23,16 +28,13 @@ public:
 	//@}
 
 private:
-	/// @name 内部実装
+	/// @name テスト用	
 	//@{
-	/// 描画
-	void draw();
-	//@}
-
-	/// @name プライベートメンバ変数
-	//@{
-	/// レンダリングデバイス
-	LPDIRECT3DDEVICE9 m_pD3DDevice;
+	void update();
+	void draw() const;
+	TestMan TestMan;
+	Camera mCamera;
+	Light mLight;
 	//@}
 
 };

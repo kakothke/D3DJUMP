@@ -14,11 +14,11 @@ public:
     /// @name ウィンドウ設定
     //@{
     /// ウィンドウサイズ横
-    const static int WindowWidth = 1280;
+    const static USHORT WindowWidth = 1280;
     /// ウィンドウサイズ縦
-    const static int WindowHeight = 720;
+    const static USHORT WindowHeight = 720;
     /// ウィンドウ名
-    const static LPCWSTR WindowName;
+    const static LPCTSTR WindowName;
     //@}
 
     /// @name DirectX設定
@@ -32,7 +32,7 @@ public:
     /// @name ゲーム設定
     //@{
     /// 固定するfps
-    const static int Fps = 60;
+    const static byte Fps = 60;
     //@}
 
 };

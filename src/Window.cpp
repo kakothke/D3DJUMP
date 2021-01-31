@@ -40,17 +40,21 @@ Window::Window()
 Window::~Window()
 {
 	// ウィンドウの破棄
-	DestroyWindow(m_hWnd);
-	UnregisterClass(Define::WindowName, m_hInst);
+	if (m_hWnd) {
+		DestroyWindow(m_hWnd);
+		UnregisterClass(Define::WindowName, m_hInst);
+	}
 
 	// ミューテックスの開放
-	ReleaseMutex(m_hMutex);
-	CloseHandle(m_hMutex);
+	if (m_hMutex) {
+		ReleaseMutex(m_hMutex);
+		CloseHandle(m_hMutex);
+	}
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 初期化処理
-bool Window::initialize(HINSTANCE a_hInst)
+bool Window::initialize(const HINSTANCE& a_hInst)
 {
 	m_hInst = a_hInst;
 
@@ -69,9 +73,6 @@ bool Window::initialize(HINSTANCE a_hInst)
 		MessageBox(NULL, TEXT("ウィンドウの作成に失敗しました。"), TEXT("WND_ERROR"), MB_OK | MB_ICONHAND);
 		return false;
 	}
-	// ウィンドウを表示
-	ShowWindow(m_hWnd, SW_SHOW);
-	UpdateWindow(m_hWnd);
 
 	return true;
 }
@@ -152,22 +153,20 @@ bool Window::createWindow()
 	if (!m_hWnd) {
 		return false;
 	}
-
-	// 作成したウィンドウのサイズと位置を変更
+	
+	// 非クライアント領域を加算したウィンドウサイズを計算
 	RECT wndRect, cltRect;
 	GetWindowRect(m_hWnd, &wndRect);
 	GetClientRect(m_hWnd, &cltRect);
-
-	// 非クライアント領域を加算したサイズを計算
 	int resizeW = ((wndRect.right - wndRect.left) - (cltRect.right - cltRect.left)) + Define::WindowWidth;
 	int resizeH = ((wndRect.bottom - wndRect.top) - (cltRect.bottom - cltRect.top)) + Define::WindowHeight;
 
-	// 変更
+	// 作成したウィンドウの位置とサイズを変更
 	SetWindowPos(
 		m_hWnd,
 		NULL,
 		(GetSystemMetrics(SM_CXSCREEN) - resizeW) / 2, // モニターの中央に表示
-		(GetSystemMetrics(SM_CYSCREEN) - resizeH) / 2, // ''
+		(GetSystemMetrics(SM_CYSCREEN) - resizeH) / 2, // モニターの中央に表示
 		resizeW,
 		resizeH,
 		SWP_NOZORDER | SWP_NOOWNERZORDER

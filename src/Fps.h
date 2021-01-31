@@ -13,10 +13,9 @@ namespace myGame {
 class Fps
 {
 public:
-	/// @name コンストラクタ/デストラクタ
+	/// @name コンストラクタ
 	//@{
 	Fps();
-	~Fps();
 	//@}
 
 	/// fpsを調整する

@@ -17,19 +17,16 @@
     <Filter Include="リソースファイル">
       <UniqueIdentifier>{7bc03752-dc13-4f0d-90c9-12794f052546}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyGame\System">
+      <UniqueIdentifier>{23dbb54d-30a2-4319-92d5-3ddcbf359dd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyGame\Camera">
+      <UniqueIdentifier>{3103f07c-6653-4771-bdee-d9d8011054f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
       <Filter>MyGame</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MainLoop.cpp">
-      <Filter>MyGame</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SystemMain.cpp">
-      <Filter>MyGame</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestPlane.cpp">
-      <Filter>MyGame\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="src\Define.cpp">
       <Filter>MyGame\Comon</Filter>
@@ -40,23 +37,38 @@
     <ClCompile Include="src\Mesh.cpp">
       <Filter>MyGame\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="src\DirectX9.cpp">
+    <ClCompile Include="src\Window.cpp">
+      <Filter>MyGame\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SystemMain.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window.cpp">
+    <ClCompile Include="src\MainLoop.cpp">
       <Filter>MyGame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Direct3D9.cpp">
+      <Filter>MyGame\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transform.cpp">
+      <Filter>MyGame\Comon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vector3.cpp">
+      <Filter>MyGame\Comon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestMan.cpp">
+      <Filter>MyGame\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject.cpp">
+      <Filter>MyGame\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Light.cpp">
+      <Filter>MyGame\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>MyGame\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\SystemMain.h">
-      <Filter>MyGame</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MainLoop.h">
-      <Filter>MyGame</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TestPlane.h">
-      <Filter>MyGame\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="src\Define.h">
       <Filter>MyGame\Comon</Filter>
     </ClInclude>
@@ -69,11 +81,44 @@
     <ClInclude Include="src\Macros.h">
       <Filter>MyGame\Comon</Filter>
     </ClInclude>
-    <ClInclude Include="src\DirectX9.h">
+    <ClInclude Include="src\Window.h">
+      <Filter>MyGame\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SystemMain.h">
       <Filter>MyGame</Filter>
     </ClInclude>
-    <ClInclude Include="src\Window.h">
+    <ClInclude Include="src\MainLoop.h">
       <Filter>MyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Types.h">
+      <Filter>MyGame\Comon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Direct3D9.h">
+      <Filter>MyGame\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Transform.h">
+      <Filter>MyGame\Comon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vector3.h">
+      <Filter>MyGame\Comon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Singleton.h">
+      <Filter>MyGame\Comon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tag.h">
+      <Filter>MyGame\Comon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TestMan.h">
+      <Filter>MyGame\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject.h">
+      <Filter>MyGame\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Light.h">
+      <Filter>MyGame\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
+      <Filter>MyGame\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

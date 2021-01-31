@@ -1,22 +1,19 @@
 #include "MainLoop.h"
 
 //-------------------------------------------------------------------------------------------------
+#include "Direct3D9.h"
 #include "Define.h"
+#include "Mesh.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
 /// コンストラクタ
-MainLoop::MainLoop(LPDIRECT3DDEVICE9 a_pD3DDevice)
-	: m_pD3DDevice(a_pD3DDevice)
+MainLoop::MainLoop()
 {
-}
-
-//-------------------------------------------------------------------------------------------------
-/// デストラクタ
-MainLoop::~MainLoop()
-{
+	Mesh::getInst()->initialize();
+	Mesh::getInst()->load(MeshList::TestMan);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -24,25 +21,39 @@ MainLoop::~MainLoop()
 /// @return falseを返すとメインループを抜けてアプリケーションが終了する
 bool MainLoop::loop()
 {
+	update();
 	draw();
 	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
+/// 更新
+void MainLoop::update()
+{
+	mCamera.SetupWorldMatrix();
+	mLight.update();
+	TestMan.update();
+}
+
+//-------------------------------------------------------------------------------------------------
 /// 描画
-void MainLoop::draw()
+void MainLoop::draw() const
 {
 	// Zバッファとバックバッファをクリア
-	m_pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, Define::ClearColor, 1.0f, 0);
+	Direct3D9::getInst()->device()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, Define::ClearColor, 1.0f, 0);
 
 	// 描画開始
-	if (SUCCEEDED(m_pD3DDevice->BeginScene())) {
+	if (SUCCEEDED(Direct3D9::getInst()->device()->BeginScene())) {
+		// テストメッシュを描画
+		mLight.draw();
+		TestMan.draw();
+
 		// 描画終了
-		m_pD3DDevice->EndScene();
+		Direct3D9::getInst()->device()->EndScene();
 	}
 
 	// バックバッファを表画面に描画
-	m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+	Direct3D9::getInst()->device()->Present(NULL, NULL, NULL, NULL);
 }
 
 } // namespace

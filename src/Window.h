@@ -7,6 +7,9 @@
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
+/// ウィンドウプロシージャ
+LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+
 /// Windowの管理
 class Window
 {
@@ -19,7 +22,7 @@ public:
 
 	/// @name 初期化処理
 	//@{
-	bool initialize(HINSTANCE);
+	bool initialize(const HINSTANCE&);
 	//@}
 
 	/// @name アクセサ

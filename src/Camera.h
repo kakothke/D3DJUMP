@@ -1,39 +1,34 @@
 #pragma once
 
 //-------------------------------------------------------------------------------------------------
-#include <Windows.h>
-#include "Direct3D9.h"
-#include "Window.h"
-#include "Fps.h"
-#include "Macros.h"
+#include "d3dx9.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
-/// システム管理クラス
-class SystemMain
+/// カメラ
+class Camera
 {
 public:
 	/// @name コンストラクタ
 	//@{
-	SystemMain();
+	Camera();
 	//@}
 
-	/// @name WinMainから呼び出される関数
+	/// @name 設定
 	//@{
-	/// 初期化処理
-	bool initialize(HINSTANCE);
-	/// メッセージループ
-	void msgLoop();
+	void SetupWorldMatrix();
 	//@}
 
 private:
 	/// @name プライベートメンバ変数
 	//@{
-	/// Windowを管理する
-	Window mWindow;
-	/// fpsを制御する
-	Fps mFps;
+	/// カメラの位置
+	D3DXVECTOR3 mEye;
+	/// 注視点
+	D3DXVECTOR3 mLookAt;
+	/// カメラの上方向
+	D3DXVECTOR3 mUpVec;
 	//@}
 
 };
