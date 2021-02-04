@@ -1,42 +1,32 @@
 #pragma once
 
 //-------------------------------------------------------------------------------------------------
-#include "d3dx9.h"
-#include "Transform.h"
-#include "GameObjectTag.h"
+#include "IOnSceneChangedListener.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
-/// ゲームオブジェクトの抽象基本クラス
-class GameObject
+/// シーンの基本クラス
+class AbstractScene
 {
 public:
-	/// @name コンストラクタ
+	/// @name コンストラクタ/仮想デストラクタ
 	//@{
-	GameObject();
-	GameObject(Transform);
-	GameObject(GameObjcetTag);
-	GameObject(Transform, GameObjcetTag);
+	AbstractScene(IOnSceneChangedListener* aImpl) : mImplSceneChanged(aImpl) {}
+	virtual ~AbstractScene() = default;
 	//@}
 
-	/// @name 外部呼出し用の更新/描画
+	// @name 仮想関数
 	//@{
 	virtual void update() = 0;
 	virtual void draw() const = 0;
 	//@}
 
-	/// @name アクセサ
-	//@{
-	const GameObjcetTag& tag();
-	//@}
-
 protected:
 	/// @name プライベートメンバ変数
 	//@{
-	Transform mTransform;
-	GameObjcetTag mTag;
-	bool mIsActive;
+	/// シーン遷移のインターフェース
+	IOnSceneChangedListener* mImplSceneChanged;
 	//@}
 
 };

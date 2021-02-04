@@ -15,11 +15,12 @@ Mesh::Mesh()
 {
 	// ゼロクリア
 	for (int i = 0; i < (int)MeshList::TERM; i++) {
-		ZeroMemory(&mXFile[i], sizeof(XFile));
+		ZeroMemory(&mXFile[i], sizeof(XFileData));
 	}
 
 	// 各メッシュのファイルパスを指定
-	mFilePath[(int)MeshList::TestMan] = TEXT("res/mesh/f-mine.x");
+	mFilePath[(int)MeshList::TestMan] = TEXT("res/mesh/Sample01.x");
+	mFilePath[(int)MeshList::TestPlane] = TEXT("res/mesh/f-mine.x");
 
 }
 
@@ -45,12 +46,12 @@ void Mesh::initialize()
 /// 描画
 /// @param aMeshList 描画するメッシュ
 /// @param aTransform 描画する位置、回転、スケール
-void Mesh::draw(MeshList aMeshList, Transform aTransform)
+bool Mesh::draw(MeshList aMeshList, Transform aTransform)
 {
-	XFile* xFile = &mXFile[(int)aMeshList];
-	if (xFile == nullptr) {
+	XFileData* xFile = &mXFile[(int)aMeshList];
+	if (!xFile->mesh) {
 		MessageBox(NULL, TEXT("描画するメッシュが読み込めていません"), TEXT("MESH_ERROR"), MB_OK | MB_ICONSTOP);
-		return;
+		return false;
 	}
 
 	// 位置用行列
@@ -85,6 +86,8 @@ void Mesh::draw(MeshList aMeshList, Transform aTransform)
 		// メッシュ・サブセットの描画。
 		xFile->mesh->DrawSubset(i);
 	}
+
+	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -95,7 +98,7 @@ bool Mesh::load(MeshList aMeshList)
 {
 	// 読み込むファイルパスとXファイル
 	LPCTSTR meshFilePath = mFilePath[(int)aMeshList];
-	XFile* xFile = &mXFile[(int)aMeshList];
+	XFileData* xFile = &mXFile[(int)aMeshList];
 
 	// Xファイルの読み込み
 	LPD3DXBUFFER pD3DXMtrlBuffer;
@@ -170,7 +173,7 @@ bool Mesh::load(MeshList aMeshList)
 void Mesh::release(MeshList aMeshList)
 {
 	// 読み込むXファイル
-	XFile* xFile = &mXFile[(int)aMeshList];
+	XFileData* xFile = &mXFile[(int)aMeshList];
 
 	// エラーチェック
 	if (!xFile->mesh) {
@@ -200,7 +203,7 @@ void Mesh::release(MeshList aMeshList)
 void Mesh::release(int aNum)
 {
 	// 読み込むXファイル
-	XFile* xFile = &mXFile[aNum];
+	XFileData* xFile = &mXFile[aNum];
 
 	// エラーチェック
 	if (!xFile->mesh) {

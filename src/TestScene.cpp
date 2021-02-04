@@ -1,8 +1,6 @@
-#include "MainLoop.h"
+#include "TestScene.h"
 
 //-------------------------------------------------------------------------------------------------
-#include "Direct3D9.h"
-#include "Define.h"
 #include "Mesh.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -10,50 +8,39 @@ namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
 /// コンストラクタ
-MainLoop::MainLoop()
+TestScene::TestScene(IOnSceneChangedListener* aImpl) : AbstractScene(aImpl)
 {
 	Mesh::getInst()->initialize();
 	Mesh::getInst()->load(MeshList::TestMan);
+	Mesh::getInst()->load(MeshList::TestPlane);
+
+	mTestPlane = TestPlane(Transform(Vector3(-2.0f, 5.0f, 4.0f), Vector3(0.0f, 2.0f, 0), Vector3(0.0f, 2.0f, 0.0f)));
 }
 
 //-------------------------------------------------------------------------------------------------
-/// アプリケーションのメインループ
-/// @return falseを返すとメインループを抜けてアプリケーションが終了する
-bool MainLoop::loop()
+/// デストラクタ
+TestScene::~TestScene()
 {
-	update();
-	draw();
-	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 更新
-void MainLoop::update()
+void TestScene::update()
 {
-	mCamera.SetupWorldMatrix();
+	mCamera.update();
+
 	mLight.update();
-	TestMan.update();
+	mTestMan.update();
+	mTestPlane.update();
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 描画
-void MainLoop::draw() const
+void TestScene::draw() const
 {
-	// Zバッファとバックバッファをクリア
-	Direct3D9::getInst()->device()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, Define::ClearColor, 1.0f, 0);
-
-	// 描画開始
-	if (SUCCEEDED(Direct3D9::getInst()->device()->BeginScene())) {
-		// テストメッシュを描画
-		mLight.draw();
-		TestMan.draw();
-
-		// 描画終了
-		Direct3D9::getInst()->device()->EndScene();
-	}
-
-	// バックバッファを表画面に描画
-	Direct3D9::getInst()->device()->Present(NULL, NULL, NULL, NULL);
+	mLight.draw();
+	mTestMan.draw();
+	mTestPlane.draw();
 }
 
 } // namespace

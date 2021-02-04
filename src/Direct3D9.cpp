@@ -1,6 +1,9 @@
 #include "Direct3D9.h"
 
 //-------------------------------------------------------------------------------------------------
+#include "Define.h"
+
+//-------------------------------------------------------------------------------------------------
 namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
@@ -67,6 +70,64 @@ bool Direct3D9::initialize(const HWND& a_hWnd)
 }
 
 //-------------------------------------------------------------------------------------------------
+/// 描画開始
+bool Direct3D9::drawStart()
+{
+	mD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, Define::ClearColor, 1.0f, 0);
+
+	mD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
+	mD3DDevice->LightEnable(0, true);
+
+	if (D3D_OK == mD3DDevice->BeginScene())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+/// 描画終了
+void Direct3D9::drawEnd()
+{
+	mD3DDevice->EndScene();
+	mD3DDevice->Present(NULL, NULL, NULL, NULL);
+}
+
+//-------------------------------------------------------------------------------------------------
+/// トランスフォームのセットアップ
+/// @param aCameraPos カメラの位置
+/// @param aLookPos 注視点
+void Direct3D9::setUpViewMatrix(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos)
+{
+	// 視界
+	D3DXMATRIXA16 matView;
+	D3DXMATRIXA16 matProj;
+
+	// ビューポート
+	D3DVIEWPORT9 vp;
+	mD3DDevice->GetViewport(&vp);
+	float aspect = (float)vp.Width / (float)vp.Height;
+
+	// カメラの上方向
+	D3DXVECTOR3 upVector(0.0f, 1.0f, 0.0f);
+
+	D3DXMatrixLookAtLH(
+		&matView,
+		&aCameraPos,
+		&aLookPos,
+		&upVector
+	);
+
+	// ビューマトリクスの設定
+	mD3DDevice->SetTransform(D3DTS_VIEW, &matView);
+
+	// デバイスに対して、投影行列を設定。
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(45), aspect, 1.0f, 2000.0f);
+	mD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
+}
+
+//-------------------------------------------------------------------------------------------------
 /// 作成したデバイスを返す
 LPDIRECT3DDEVICE9 Direct3D9::device() const
 {
@@ -92,7 +153,7 @@ bool Direct3D9::createInterface()
 }
 
 //-------------------------------------------------------------------------------------------------
-/// プレゼンテーションパラメーターの設定
+/// プレゼンテーションパラメーターのセットアップ
 bool Direct3D9::setupPresentParams()
 {
 	if (Define::WindowModeFlag)
@@ -184,25 +245,25 @@ bool Direct3D9::createDeveice()
 }
 
 //-------------------------------------------------------------------------------------------------
-/// ビューポートの設定
+/// ビューポートのセットアップ
 bool Direct3D9::setupViewPort()
 {
 	// ビューポートパラメータ
-	D3DVIEWPORT9 view_port;
+	D3DVIEWPORT9 viewPort;
 
 	// ビューポートの左上座標
-	view_port.X = 0;
-	view_port.Y = 0;
+	viewPort.X = 0;
+	viewPort.Y = 0;
 	// ビューポートの幅
-	view_port.Width = mParams.BackBufferWidth;
+	viewPort.Width = mParams.BackBufferWidth;
 	// ビューポートの高さ
-	view_port.Height = mParams.BackBufferHeight;
+	viewPort.Height = mParams.BackBufferHeight;
 	// ビューポート深度設定
-	view_port.MinZ = 0.0f;
-	view_port.MaxZ = 1.0f;
+	viewPort.MinZ = 0.0f;
+	viewPort.MaxZ = 1.0f;
 
 	// ビューポート設定
-	if (FAILED(mD3DDevice->SetViewport(&view_port)))
+	if (FAILED(mD3DDevice->SetViewport(&viewPort)))
 	{
 		return false;
 	}

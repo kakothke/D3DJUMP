@@ -1,34 +1,33 @@
-#include "Camera.h"
+#include "Game.h"
 
 //-------------------------------------------------------------------------------------------------
 #include "Direct3D9.h"
+#include "Mesh.h"
+#include "Define.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
 /// コンストラクタ
-Camera::Camera()
-	: mCameraPos(D3DXVECTOR3(0, 0, -10))
-	, mLookPos(D3DXVECTOR3(0, 0, 0))
+Game::Game()
+	: mSceneManager()
+	, mFps()
 {
 }
 
 //-------------------------------------------------------------------------------------------------
-/// コンストラクタ
-/// @param mCameraPos カメラの位置
-/// @param mLookPos 注視点
-Camera::Camera(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos)
-	: mCameraPos(aCameraPos)
-	, mLookPos(aLookPos)
+/// アプリケーションのメインループ
+/// @return falseを返すとメインループを抜けてアプリケーションが終了する
+bool Game::mainLoop()
 {
-}
+	// シーン処理
+	mSceneManager.run();
 
-//-------------------------------------------------------------------------------------------------
-/// 更新
-void Camera::update()
-{
-	Direct3D9::getInst()->setUpViewMatrix(mCameraPos, mLookPos);
+	// fpsを調整する
+	mFps.adjust();
+
+	return true;
 }
 
 } // namespace

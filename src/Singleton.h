@@ -5,7 +5,8 @@ namespace myGame {
 
 /// ƒVƒ“ƒOƒ‹ƒgƒ“
 template <typename T>
-class Singleton {
+class Singleton
+{
 public:
 	static T* getInst() {
 		static T inst;

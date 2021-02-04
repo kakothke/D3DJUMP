@@ -30,6 +30,17 @@ public:
 	bool initialize(const HWND&);
 	//@}
 
+	/// @name 描画開始/描画終了
+	//@{
+	bool drawStart();
+	void drawEnd();
+	//@}
+
+	/// @name カメラ
+	//@{
+	void setUpViewMatrix(D3DXVECTOR3, D3DXVECTOR3);
+	//@}
+
 	/// @name アクセサ
 	//@{
 	/// 作成したデバイスを返す
@@ -39,15 +50,15 @@ public:
 	//@}
 
 private:
-	/// @name 内部実装
+	/// @name 内部実装関数
 	//@{
 	/// インターフェースの作成
 	bool createInterface();
-	/// プレゼンテーションパラメータの設定
+	/// プレゼンテーションパラメータのセットアップ
 	bool setupPresentParams();
 	/// デバイスの作成
 	bool createDeveice();
-	/// ビューポートの設定
+	/// ビューポートのセットアップ
 	bool setupViewPort();
 	/// フォントデバイスの作成
 	bool createFontDevice();

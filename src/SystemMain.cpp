@@ -1,34 +1,28 @@
 #include "SystemMain.h"
 
 //-------------------------------------------------------------------------------------------------
-#include "MainLoop.h"
+#include "Direct3D9.h"
+#include "Window.h"
+#include "Game.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
-/// コンストラクタ
-SystemMain::SystemMain()
-	: mWindow()
-	, mFps()
-{
-}
-
-//-------------------------------------------------------------------------------------------------
 /// 初期化処理
-bool SystemMain::initialize(HINSTANCE a_hInst)
+bool SystemMain::initialize(HINSTANCE a_hInst) const
 {
 	// ウィンドウ初期化
-	if (!mWindow.initialize(a_hInst)) {
+	if (!Window::getInst()->initialize(a_hInst)) {
 		return false;
 	}
 	// Direct3D9初期化
-	if (!Direct3D9::getInst()->initialize(mWindow.hWnd())) {
+	if (!Direct3D9::getInst()->initialize(Window::getInst()->hWnd())) {
 		return false;
 	}
 	// ウィンドウを表示
-	ShowWindow(mWindow.hWnd(), SW_SHOW);
-	UpdateWindow(mWindow.hWnd());
+	ShowWindow(Window::getInst()->hWnd(), SW_SHOW);
+	UpdateWindow(Window::getInst()->hWnd());
 
 	return true;
 }
@@ -37,8 +31,7 @@ bool SystemMain::initialize(HINSTANCE a_hInst)
 /// メッセージループ
 void SystemMain::msgLoop()
 {
-	MainLoop mainLoop;
-
+	Game game;
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
 
@@ -49,11 +42,9 @@ void SystemMain::msgLoop()
 			DispatchMessage(&msg);
 		} else {
 			// ゲームのメインループ
-			if (!mainLoop.loop()) {
+			if (!game.mainLoop()) {
 				break;
 			}
-			// fpsを調整する
-			mFps.adjust();
 		}
 	}
 }

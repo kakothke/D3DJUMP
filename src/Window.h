@@ -2,6 +2,7 @@
 
 //-------------------------------------------------------------------------------------------------
 #include <Windows.h>
+#include "Singleton.h"
 #include "Define.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ namespace myGame {
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 /// Windowの管理
-class Window
+class Window : public Singleton<Window>
 {
 public:
 	/// @name コンストラクタ/デストラクタ

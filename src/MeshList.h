@@ -1,10 +1,16 @@
 #pragma once
-#include "Define.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
-const LPCTSTR Define::WindowName = TEXT("MyGame");
+/// メッシュリスト
+enum class MeshList
+{
+	TestMan,
+	TestPlane,
+
+	TERM
+};
 
 } // namespace
 // EOF

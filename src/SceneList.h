@@ -3,13 +3,14 @@
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
-/// ゲームオブジェクトを見分ける為の構造体
-enum class Tag
+/// シーンリスト
+enum class SceneList
 {
-	Untagged,
-	Light,
+	POP,
 
-	TestMan,
+	Test,
+	Title,
+	Game,
 
 	TERM
 };

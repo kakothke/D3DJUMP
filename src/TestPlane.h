@@ -1,21 +1,25 @@
 #pragma once
 
 //-------------------------------------------------------------------------------------------------
-#include <Windows.h>
+#include "GameObject.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
-/// システム管理クラス
-class SystemMain
+/// テスト用のゲームオブジェクト
+class TestPlane : public GameObject
 {
 public:
-	/// @name WinMainから呼び出される関数
+	/// name コンストラクタ
 	//@{
-	/// 初期化処理
-	bool initialize(HINSTANCE) const;
-	/// メッセージループ
-	void msgLoop();
+	TestPlane();
+	TestPlane(Transform);
+	//@}
+
+	/// @name 更新/描画
+	//@{
+	void update() override;
+	void draw() const override;
 	//@}
 
 };

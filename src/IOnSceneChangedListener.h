@@ -1,22 +1,18 @@
 #pragma once
 
 //-------------------------------------------------------------------------------------------------
-#include <Windows.h>
+#include "SceneList.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
-/// システム管理クラス
-class SystemMain
+/// シーン遷移のインターフェース
+class IOnSceneChangedListener
 {
 public:
-	/// @name WinMainから呼び出される関数
-	//@{
-	/// 初期化処理
-	bool initialize(HINSTANCE) const;
-	/// メッセージループ
-	void msgLoop();
-	//@}
+	IOnSceneChangedListener() = default;
+	virtual ~IOnSceneChangedListener() = default;
+	virtual void onSceneChanged(const SceneList aSceneList) = 0;
 
 };
 

@@ -3,38 +3,31 @@
 //-------------------------------------------------------------------------------------------------
 #include "d3d9.h"
 #include "d3dx9.h"
-
-//-------------------------------------------------------------------------------------------------
-// テスト用
-#include "TestMan.h"
-#include "Camera.h"
-#include "Light.h"
+#include "SceneManager.h"
+#include "Fps.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
-/// メインループ
-class MainLoop
+/// ゲーム全体
+class Game
 {
 public:
 	/// @name コンストラクタ
 	//@{
-	MainLoop();
+	Game();
 	//@}
 
 	/// @name ゲームのメインループ
 	//@{
-	bool loop();
+	bool mainLoop();
 	//@}
 
 private:
-	/// @name テスト用	
+	/// @name プライベートメンバ変数
 	//@{
-	void update();
-	void draw() const;
-	TestMan TestMan;
-	Camera mCamera;
-	Light mLight;
+	SceneManager mSceneManager;
+	Fps mFps;
 	//@}
 
 };

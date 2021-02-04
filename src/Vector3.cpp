@@ -31,7 +31,7 @@ Vector3::Vector3(float aX, float aY, float aZ)
 /// ƒxƒNƒgƒ‹‚Ì’·‚³
 float Vector3::magnitude() const
 {
-	return (float)sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+	return (float)sqrt(pow(x, 2.0) + pow(y, 2.0) + pow(z, 2.0));
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -65,12 +65,12 @@ bool Window::initialize(const HINSTANCE& a_hInst)
 	}
 	// ウィンドウクラスを登録する
 	if (!registerClass()) {
-		MessageBox(NULL, TEXT("ウィンドウクラスの登録に失敗しました。"), TEXT("WND_ERROR"), MB_OK | MB_ICONHAND);
+		MessageBox(NULL, TEXT("ウィンドウクラスの登録に失敗しました。"), TEXT("WINDOW_ERROR"), MB_OK | MB_ICONHAND);
 		return false;
 	}
 	// ウィンドウを作成する
 	if (!createWindow()) {
-		MessageBox(NULL, TEXT("ウィンドウの作成に失敗しました。"), TEXT("WND_ERROR"), MB_OK | MB_ICONHAND);
+		MessageBox(NULL, TEXT("ウィンドウの作成に失敗しました。"), TEXT("WINDOW_ERROR"), MB_OK | MB_ICONHAND);
 		return false;
 	}
 

@@ -13,22 +13,19 @@ public:
 	/// @name コンストラクタ
 	//@{
 	Camera();
+	Camera(D3DXVECTOR3, D3DXVECTOR3);
 	//@}
-
-	/// @name 設定
+	
+	/// @name 更新
 	//@{
-	void SetupWorldMatrix();
+	void update();
 	//@}
 
 private:
 	/// @name プライベートメンバ変数
 	//@{
-	/// カメラの位置
-	D3DXVECTOR3 mEye;
-	/// 注視点
-	D3DXVECTOR3 mLookAt;
-	/// カメラの上方向
-	D3DXVECTOR3 mUpVec;
+	D3DXVECTOR3 mCameraPos;
+	D3DXVECTOR3 mLookPos;
 	//@}
 
 };

@@ -8,13 +8,13 @@ namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
 /// コンストラクタ
-Light::Light() : GameObject(Tag::Light)
+Light::Light() : GameObject(GameObjcetTag::Light)
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 引数付きコンストラクタ
-Light::Light(LPDIRECT3DDEVICE9 aDevice,Transform aTransform) : GameObject(aTransform, Tag::Light)
+Light::Light(LPDIRECT3DDEVICE9 aDevice,Transform aTransform) : GameObject(aTransform, GameObjcetTag::Light)
 	, mLight()
 {
 	// 白のディレクショナルライトを設定する

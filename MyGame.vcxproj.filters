@@ -20,8 +20,23 @@
     <Filter Include="MyGame\System">
       <UniqueIdentifier>{23dbb54d-30a2-4319-92d5-3ddcbf359dd3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyGame\Camera">
-      <UniqueIdentifier>{3103f07c-6653-4771-bdee-d9d8011054f7}</UniqueIdentifier>
+    <Filter Include="MyGame\GameObject\TestObject">
+      <UniqueIdentifier>{5d9c9966-4b11-43cb-b17f-fbe242609b45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyGame\Scene">
+      <UniqueIdentifier>{8f48f658-9201-4f24-9ef4-aa5c02825daa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyGame\GameObject\Light">
+      <UniqueIdentifier>{a4995faa-02c9-4fdb-8ac9-fc2b64c161bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyGame\Scene\SceneManager">
+      <UniqueIdentifier>{cd9b5c3e-86e9-414c-8e64-df13c952e448}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyGame\Resource\Mesh">
+      <UniqueIdentifier>{42a3ac3d-9cbf-4baf-918d-3afa067fdddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyGame\GameObject\Camera">
+      <UniqueIdentifier>{f152ea62-77cb-40e1-8c06-0974f3098e64}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,16 +49,10 @@
     <ClCompile Include="src\Fps.cpp">
       <Filter>MyGame\Comon</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mesh.cpp">
-      <Filter>MyGame\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="src\Window.cpp">
       <Filter>MyGame\System</Filter>
     </ClCompile>
     <ClCompile Include="src\SystemMain.cpp">
-      <Filter>MyGame</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MainLoop.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
     <ClCompile Include="src\Direct3D9.cpp">
@@ -55,17 +64,32 @@
     <ClCompile Include="src\Vector3.cpp">
       <Filter>MyGame\Comon</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestMan.cpp">
-      <Filter>MyGame\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="src\GameObject.cpp">
       <Filter>MyGame\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\TestMan.cpp">
+      <Filter>MyGame\GameObject\TestObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestPlane.cpp">
+      <Filter>MyGame\GameObject\TestObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game.cpp">
+      <Filter>MyGame</Filter>
+    </ClCompile>
     <ClCompile Include="src\Light.cpp">
-      <Filter>MyGame\GameObject</Filter>
+      <Filter>MyGame\GameObject\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestScene.cpp">
+      <Filter>MyGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager.cpp">
+      <Filter>MyGame\Scene\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>MyGame\Resource\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">
-      <Filter>MyGame\Camera</Filter>
+      <Filter>MyGame\GameObject\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +99,6 @@
     <ClInclude Include="src\Fps.h">
       <Filter>MyGame\Comon</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mesh.h">
-      <Filter>MyGame\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="src\Macros.h">
       <Filter>MyGame\Comon</Filter>
     </ClInclude>
@@ -85,9 +106,6 @@
       <Filter>MyGame\System</Filter>
     </ClInclude>
     <ClInclude Include="src\SystemMain.h">
-      <Filter>MyGame</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MainLoop.h">
       <Filter>MyGame</Filter>
     </ClInclude>
     <ClInclude Include="src\Types.h">
@@ -105,20 +123,47 @@
     <ClInclude Include="src\Singleton.h">
       <Filter>MyGame\Comon</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tag.h">
-      <Filter>MyGame\Comon</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TestMan.h">
-      <Filter>MyGame\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="src\GameObject.h">
       <Filter>MyGame\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="src\TestMan.h">
+      <Filter>MyGame\GameObject\TestObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TestPlane.h">
+      <Filter>MyGame\GameObject\TestObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game.h">
+      <Filter>MyGame</Filter>
+    </ClInclude>
     <ClInclude Include="src\Light.h">
+      <Filter>MyGame\GameObject\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjectTag.h">
       <Filter>MyGame\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="src\TestScene.h">
+      <Filter>MyGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager.h">
+      <Filter>MyGame\Scene\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneList.h">
+      <Filter>MyGame\Scene\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IOnSceneChangedListener.h">
+      <Filter>MyGame\Scene\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AbstractScene.h">
+      <Filter>MyGame\Scene\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>MyGame\Resource\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshList.h">
+      <Filter>MyGame\Resource\Mesh</Filter>
+    </ClInclude>
     <ClInclude Include="src\Camera.h">
-      <Filter>MyGame\Camera</Filter>
+      <Filter>MyGame\GameObject\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

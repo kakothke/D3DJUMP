@@ -1,4 +1,4 @@
-#include "TestMan.h"
+#include "TestPlane.h"
 
 //-------------------------------------------------------------------------------------------------
 #include "Mesh.h"
@@ -8,29 +8,30 @@ namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
 /// コンストラクタ
-TestMan::TestMan() : GameObject(GameObjcetTag::TestMan)
+TestPlane::TestPlane() : GameObject(GameObjcetTag::TestMan)
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 引数付きコンストラクタ
-TestMan::TestMan(Transform aTransform) : GameObject(aTransform, GameObjcetTag::TestMan)
+TestPlane::TestPlane(Transform aTransform) : GameObject(aTransform, GameObjcetTag::TestMan)
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 更新
-void TestMan::update()
+void TestPlane::update()
 {
-	mTransform.pos.x += .001f;
-	mTransform.rot.x += .001f;
+	mTransform.pos.x += .002f;
+	mTransform.rot.x -= .001f;
+	mTransform.rot.y -= .001f;
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 描画
-void TestMan::draw() const
+void TestPlane::draw() const
 {
-	Mesh::getInst()->draw(MeshList::TestMan, mTransform);
+	Mesh::getInst()->draw(MeshList::TestPlane, mTransform);
 }
 
 } // namespace
