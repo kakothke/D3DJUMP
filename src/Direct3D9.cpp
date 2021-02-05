@@ -98,7 +98,8 @@ void Direct3D9::drawEnd()
 /// トランスフォームのセットアップ
 /// @param aCameraPos カメラの位置
 /// @param aLookPos 注視点
-void Direct3D9::setUpViewMatrix(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos)
+/// @param aUpVec 上方向のベクトル
+void Direct3D9::setUpViewMatrix(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos, D3DXVECTOR3 aUpVec)
 {
 	// 視界
 	D3DXMATRIXA16 matView;
@@ -110,13 +111,13 @@ void Direct3D9::setUpViewMatrix(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos)
 	float aspect = (float)vp.Width / (float)vp.Height;
 
 	// カメラの上方向
-	D3DXVECTOR3 upVector(0.0f, 1.0f, 0.0f);
+	D3DXVECTOR3 upVec(0.0f, 1.0f, 0.0f);
 
 	D3DXMatrixLookAtLH(
 		&matView,
 		&aCameraPos,
 		&aLookPos,
-		&upVector
+		&upVec
 	);
 
 	// ビューマトリクスの設定

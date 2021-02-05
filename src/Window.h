@@ -23,7 +23,7 @@ public:
 
 	/// @name 初期化処理
 	//@{
-	bool initialize(const HINSTANCE&);
+	bool initialize(const HINSTANCE& a_hInst);
 	//@}
 
 	/// @name アクセサ

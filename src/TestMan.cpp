@@ -8,13 +8,13 @@ namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
 /// コンストラクタ
-TestMan::TestMan() : GameObject(GameObjcetTag::TestMan)
+TestMan::TestMan() : GameObject(GameObjectTag::TestMan)
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 引数付きコンストラクタ
-TestMan::TestMan(Transform aTransform) : GameObject(aTransform, GameObjcetTag::TestMan)
+TestMan::TestMan(Transform aTransform) : GameObject(aTransform, GameObjectTag::TestMan)
 {
 }
 
@@ -22,7 +22,7 @@ TestMan::TestMan(Transform aTransform) : GameObject(aTransform, GameObjcetTag::T
 /// 更新
 void TestMan::update()
 {
-	mTransform.pos.x += .001f;
+	//mTransform.pos.x += .001f;
 	mTransform.rot.x += .001f;
 }
 

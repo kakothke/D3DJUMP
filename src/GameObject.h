@@ -15,9 +15,9 @@ public:
 	/// @name コンストラクタ
 	//@{
 	GameObject();
-	GameObject(Transform);
-	GameObject(GameObjcetTag);
-	GameObject(Transform, GameObjcetTag);
+	GameObject(Transform aTransform);
+	GameObject(GameObjectTag aTag);
+	GameObject(Transform aTransform, GameObjectTag aTag);
 	//@}
 
 	/// @name 外部呼出し用の更新/描画
@@ -28,14 +28,15 @@ public:
 
 	/// @name アクセサ
 	//@{
-	const GameObjcetTag& tag();
+	const Transform& transform();
+	const GameObjectTag& tag();
 	//@}
 
 protected:
 	/// @name プライベートメンバ変数
 	//@{
 	Transform mTransform;
-	GameObjcetTag mTag;
+	GameObjectTag mTag;
 	bool mIsActive;
 	//@}
 

@@ -7,7 +7,7 @@ namespace myGame {
 /// コンストラクタ
 GameObject::GameObject()
 	: mTransform()
-	, mTag(GameObjcetTag::Untagged)
+	, mTag(GameObjectTag::Untagged)
 	, mIsActive(true)
 {
 }
@@ -17,7 +17,7 @@ GameObject::GameObject()
 /// @param aTransform 初期位置
 GameObject::GameObject(Transform aTransform)
 	: mTransform(aTransform)
-	, mTag(GameObjcetTag::Untagged)
+	, mTag(GameObjectTag::Untagged)
 	, mIsActive(true)
 {
 }
@@ -25,7 +25,7 @@ GameObject::GameObject(Transform aTransform)
 //-------------------------------------------------------------------------------------------------
 /// 引数付きコンストラクタ
 /// @param aTag オブジェクトの種類
-GameObject::GameObject(GameObjcetTag aTag)
+GameObject::GameObject(GameObjectTag aTag)
 	: mTransform()
 	, mTag(aTag)
 	, mIsActive(true)
@@ -36,7 +36,7 @@ GameObject::GameObject(GameObjcetTag aTag)
 /// 引数付きコンストラクタ
 /// @param aTransform 初期位置
 /// @param aTag オブジェクトの種類
-GameObject::GameObject(Transform aTransform, GameObjcetTag aTag)
+GameObject::GameObject(Transform aTransform, GameObjectTag aTag)
 	: mTransform(aTransform)
 	, mTag(aTag)
 	, mIsActive(true)
@@ -44,7 +44,13 @@ GameObject::GameObject(Transform aTransform, GameObjcetTag aTag)
 }
 
 //-------------------------------------------------------------------------------------------------
-const GameObjcetTag& GameObject::tag()
+const Transform& GameObject::transform()
+{
+	return mTransform;
+}
+
+//-------------------------------------------------------------------------------------------------
+const GameObjectTag& GameObject::tag()
 {
 	return mTag;
 }

@@ -8,14 +8,21 @@ namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
 /// コンストラクタ
-Light::Light() : GameObject(GameObjcetTag::Light)
+Light::Light() : GameObject(GameObjectTag::Light)
 {
+	// 白のディレクショナルライトを設定する
+	ZeroMemory(&mLight, sizeof(D3DLIGHT9));
+	mLight.Type = D3DLIGHT_DIRECTIONAL;
+	mLight.Diffuse.r = 1.0f;
+	mLight.Diffuse.g = 1.0f;
+	mLight.Diffuse.b = 1.0f;
+	mLight.Diffuse.a = 0.0f;
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 引数付きコンストラクタ
-Light::Light(LPDIRECT3DDEVICE9 aDevice,Transform aTransform) : GameObject(aTransform, GameObjcetTag::Light)
-	, mLight()
+Light::Light(Transform aTransform) : GameObject(aTransform, GameObjectTag::Light)
+, mLight()
 {
 	// 白のディレクショナルライトを設定する
 	ZeroMemory(&mLight, sizeof(D3DLIGHT9));
@@ -33,7 +40,7 @@ void Light::update()
 	mTransform.pos.x = sinf((float)timeGetTime() / 1000.0f);
 	mTransform.pos.y = cosf((float)timeGetTime() / 1000.0f);
 	mTransform.pos.z = 0;
-	D3DXVec3Normalize((D3DXVECTOR3*)&mLight.Direction, &mTransform.pos.d3dxVector3());
+	D3DXVec3Normalize((D3DXVECTOR3*)&mLight.Direction, &Vector3Math::D3DXVECTOR3(mTransform.pos));
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -38,6 +38,9 @@
     <Filter Include="MyGame\GameObject\Camera">
       <UniqueIdentifier>{f152ea62-77cb-40e1-8c06-0974f3098e64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyGame\Shader">
+      <UniqueIdentifier>{d22ae78c-7bc5-4671-a89f-f107dd7c980b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -57,12 +60,6 @@
     </ClCompile>
     <ClCompile Include="src\Direct3D9.cpp">
       <Filter>MyGame\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Transform.cpp">
-      <Filter>MyGame\Comon</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Vector3.cpp">
-      <Filter>MyGame\Comon</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject.cpp">
       <Filter>MyGame\GameObject</Filter>
@@ -91,6 +88,12 @@
     <ClCompile Include="src\Camera.cpp">
       <Filter>MyGame\GameObject\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="src\Vector3.cpp">
+      <Filter>MyGame\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transform.cpp">
+      <Filter>MyGame\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Define.h">
@@ -113,12 +116,6 @@
     </ClInclude>
     <ClInclude Include="src\Direct3D9.h">
       <Filter>MyGame\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Transform.h">
-      <Filter>MyGame\Comon</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Vector3.h">
-      <Filter>MyGame\Comon</Filter>
     </ClInclude>
     <ClInclude Include="src\Singleton.h">
       <Filter>MyGame\Comon</Filter>
@@ -165,5 +162,16 @@
     <ClInclude Include="src\Camera.h">
       <Filter>MyGame\GameObject\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\Vector3.h">
+      <Filter>MyGame\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Transform.h">
+      <Filter>MyGame\GameObject</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader.hlsl">
+      <Filter>MyGame\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

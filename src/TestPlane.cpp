@@ -8,13 +8,13 @@ namespace myGame {
 
 //-------------------------------------------------------------------------------------------------
 /// コンストラクタ
-TestPlane::TestPlane() : GameObject(GameObjcetTag::TestMan)
+TestPlane::TestPlane() : GameObject(GameObjectTag::TestMan)
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 引数付きコンストラクタ
-TestPlane::TestPlane(Transform aTransform) : GameObject(aTransform, GameObjcetTag::TestMan)
+TestPlane::TestPlane(Transform aTransform) : GameObject(aTransform, GameObjectTag::TestMan)
 {
 }
 
@@ -22,7 +22,7 @@ TestPlane::TestPlane(Transform aTransform) : GameObject(aTransform, GameObjcetTa
 /// 更新
 void TestPlane::update()
 {
-	mTransform.pos.x += .002f;
+	//mTransform.pos.x += .002f;
 	mTransform.rot.x -= .001f;
 	mTransform.rot.y -= .001f;
 }

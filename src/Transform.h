@@ -15,7 +15,7 @@ public:
 	/// @name コンストラクタ
 	//@{
 	Transform();
-	Transform(Vector3, Vector3, Vector3);
+	Transform(Vector3 aPos, Vector3 aRot, Vector3 aScale);
 	//@}
 
 	/// @name メンバ変数

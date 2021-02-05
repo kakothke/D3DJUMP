@@ -13,7 +13,7 @@ public:
 	/// name コンストラクタ
 	//@{
 	Light();
-	Light(LPDIRECT3DDEVICE9, Transform);
+	Light(Transform aTransform);
 	//@}
 
 	/// @name 更新/描画

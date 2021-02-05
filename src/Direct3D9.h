@@ -27,7 +27,7 @@ public:
 
 	/// @name 初期化処理
 	//@{
-	bool initialize(const HWND&);
+	bool initialize(const HWND& a_hWnd);
 	//@}
 
 	/// @name 描画開始/描画終了
@@ -38,7 +38,7 @@ public:
 
 	/// @name カメラ
 	//@{
-	void setUpViewMatrix(D3DXVECTOR3, D3DXVECTOR3);
+	void setUpViewMatrix(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos, D3DXVECTOR3 aUpVec);
 	//@}
 
 	/// @name アクセサ

@@ -16,7 +16,7 @@ Transform::Transform()
 /// コンストラクタ
 /// @param aPos 位置
 /// @param aRot 回転
-/// @param aScale スケール
+/// @param aScale 大きさ
 Transform::Transform(Vector3 aPos, Vector3 aRot, Vector3 aScale)
 	: pos(aPos)
 	, rot(aRot)

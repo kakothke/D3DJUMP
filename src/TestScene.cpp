@@ -14,7 +14,7 @@ TestScene::TestScene(IOnSceneChangedListener* aImpl) : AbstractScene(aImpl)
 	Mesh::getInst()->load(MeshList::TestMan);
 	Mesh::getInst()->load(MeshList::TestPlane);
 
-	mTestPlane = TestPlane(Transform(Vector3(-2.0f, 5.0f, 4.0f), Vector3(0.0f, 2.0f, 0), Vector3(0.0f, 2.0f, 0.0f)));
+	mTestPlane = TestPlane(Transform(Vector3(-2.0f, 3.0f, 6.0f), Vector3(0.0f, 2.0f, 0), Vector3(0.0f, 2.0f, 0.0f)));
 }
 
 //-------------------------------------------------------------------------------------------------

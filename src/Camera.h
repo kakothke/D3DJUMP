@@ -1,31 +1,42 @@
 #pragma once
 
 //-------------------------------------------------------------------------------------------------
-#include "d3dx9.h"
+#include "GameObject.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
 
 /// カメラ
-class Camera
+class Camera : public GameObject
 {
 public:
 	/// @name コンストラクタ
 	//@{
 	Camera();
-	Camera(D3DXVECTOR3, D3DXVECTOR3);
+	Camera(Transform aTransform);
 	//@}
 	
-	/// @name 更新
+	/// @name 更新/描画
 	//@{
-	void update();
+	virtual void update() override;
+	virtual void draw() const override {}
 	//@}
 
-private:
+protected:
+	/// @name 内部実装関数
+	//@{
+	/// 射影
+	void setUpViewMatrix();
+	/// 指定した位置を向く
+	void lookAt(Vector3 aPos);
+	//@}
+
 	/// @name プライベートメンバ変数
 	//@{
-	D3DXVECTOR3 mCameraPos;
-	D3DXVECTOR3 mLookPos;
+	/// 注視点
+	Vector3 mLookPos;
+	/// 注視中
+	bool mIslook;
 	//@}
 
 };

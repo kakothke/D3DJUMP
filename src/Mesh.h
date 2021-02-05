@@ -27,15 +27,14 @@ public:
 
 	/// @name 描画/読み込み/破棄
 	//@{
-	bool draw(MeshList, Transform);
-	bool load(MeshList);
-	void release(MeshList);
+	bool draw(MeshList aMeshList, Transform aTransform);
+	bool load(MeshList aMeshList);
+	void release(MeshList aMeshList);
 	//@}
 
 private:
-	/// @name 内部構造体
-	//@{
-	/// Xファイル構造体
+	/// @name Xファイル構造体
+	//@{ 
 	struct XFileData
 	{
 		/// メッシュマテリアル
@@ -49,7 +48,7 @@ private:
 	};
 	//@}
 
-	// @name 破棄（デストラクタ用）
+	// @name 読み込んだメッシュを破棄する（デストラクタ用）
 	//@{
 	void release(int aNum);
 	//@}
@@ -59,8 +58,6 @@ private:
 	XFileData mXFile[(int)MeshList::TERM];
 	LPCTSTR mFilePath[(int)MeshList::TERM];
 	//@}
-
-	XFileData* mTest;
 
 };
 

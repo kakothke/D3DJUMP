@@ -13,7 +13,7 @@ public:
 	/// name コンストラクタ
 	//@{
 	TestMan();
-	TestMan(Transform);
+	TestMan(Transform aTransform);
 	//@}
 
 	/// @name 更新/描画

@@ -4,11 +4,12 @@
 namespace myGame {
 
 /// ゲームオブジェクトを見分ける為の構造体
-enum class GameObjcetTag
+enum class GameObjectTag
 {
 	Untagged,
-	Light,
 
+	Camera,
+	Light,
 	TestMan,
 
 	TERM
