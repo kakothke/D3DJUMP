@@ -44,9 +44,9 @@ public:
 	/// @name アクセサ
 	//@{
 	/// 作成したデバイスを返す
-	LPDIRECT3DDEVICE9 device() const;
+	const LPDIRECT3DDEVICE9& device() const;
 	/// 作成したプレゼンテーションパラメータを返す
-	const D3DPRESENT_PARAMETERS& params();
+	const D3DPRESENT_PARAMETERS& params() const;
 	//@}
 
 private:

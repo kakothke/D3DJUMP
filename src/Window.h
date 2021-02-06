@@ -29,7 +29,7 @@ public:
 	/// @name アクセサ
 	//@{
 	/// 作成したウィンドウハンドルを返す
-	HWND hWnd() const;
+	const HWND& hWnd() const;
 	//@}
 
 private:

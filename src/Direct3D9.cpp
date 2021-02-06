@@ -75,9 +75,6 @@ bool Direct3D9::drawStart()
 {
 	mD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, Define::ClearColor, 1.0f, 0);
 
-	mD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
-	mD3DDevice->LightEnable(0, true);
-
 	if (D3D_OK == mD3DDevice->BeginScene())
 	{
 		return true;
@@ -101,43 +98,35 @@ void Direct3D9::drawEnd()
 /// @param aUpVec 上方向のベクトル
 void Direct3D9::setUpViewMatrix(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos, D3DXVECTOR3 aUpVec)
 {
-	// 視界
-	D3DXMATRIXA16 matView;
-	D3DXMATRIXA16 matProj;
-
 	// ビューポート
 	D3DVIEWPORT9 vp;
 	mD3DDevice->GetViewport(&vp);
 	float aspect = (float)vp.Width / (float)vp.Height;
 
-	// カメラの上方向
+	// 視界
+	D3DXMATRIXA16 matView;
 	D3DXVECTOR3 upVec(0.0f, 1.0f, 0.0f);
-
-	D3DXMatrixLookAtLH(
-		&matView,
-		&aCameraPos,
-		&aLookPos,
-		&upVec
-	);
+	D3DXMatrixLookAtLH(&matView, &aCameraPos, &aLookPos, &upVec);
 
 	// ビューマトリクスの設定
 	mD3DDevice->SetTransform(D3DTS_VIEW, &matView);
 
 	// デバイスに対して、投影行列を設定。
+	D3DXMATRIXA16 matProj;
 	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(45), aspect, 1.0f, 2000.0f);
 	mD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 作成したデバイスを返す
-LPDIRECT3DDEVICE9 Direct3D9::device() const
+const LPDIRECT3DDEVICE9& Direct3D9::device() const
 {
 	return mD3DDevice;
 }
 
 //-------------------------------------------------------------------------------------------------
 /// 作成したプレゼンテーションパラメータを返す
-const D3DPRESENT_PARAMETERS& Direct3D9::params()
+const D3DPRESENT_PARAMETERS& Direct3D9::params() const
 {
 	return mParams;
 }

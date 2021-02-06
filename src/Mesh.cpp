@@ -49,6 +49,7 @@ void Mesh::initialize()
 bool Mesh::draw(MeshList aMeshList, Transform aTransform)
 {
 	XFileData* xFile = &mXFile[(int)aMeshList];
+
 	if (!xFile->mesh) {
 		MessageBox(NULL, TEXT("描画するメッシュが読み込めていません"), TEXT("MESH_ERROR"), MB_OK | MB_ICONSTOP);
 		return false;
@@ -58,20 +59,24 @@ bool Mesh::draw(MeshList aMeshList, Transform aTransform)
 	D3DXMATRIX posMatrix;
 	// 回転用行列
 	D3DXMATRIX rotMatrix;
-	// 結果の行列
+	// スケール用行列
+	D3DXMATRIX scaleMatrix;
+	// 合成行列
 	D3DXMATRIX resultMatrix;
 
-	// 単位行列を収める
+	// 行列を初期化
 	D3DXMatrixIdentity(&posMatrix);
 	D3DXMatrixIdentity(&rotMatrix);
+	D3DXMatrixIdentity(&scaleMatrix);
 	D3DXMatrixIdentity(&resultMatrix);
 
 	// 平行移動と回転の行列を設定
 	D3DXMatrixTranslation(&posMatrix, aTransform.pos.x, aTransform.pos.y, aTransform.pos.z);
-	D3DXMatrixRotationYawPitchRoll(&rotMatrix, aTransform.rot.x, aTransform.rot.y, aTransform.rot.z);
+	D3DXMatrixRotationYawPitchRoll(&rotMatrix, aTransform.rot.y, aTransform.rot.x, aTransform.rot.z);
+	D3DXMatrixScaling(&scaleMatrix, aTransform.scale.x, aTransform.scale.y, aTransform.scale.z);
 
 	// 行列の合成
-	resultMatrix = rotMatrix * posMatrix;
+	resultMatrix = scaleMatrix * rotMatrix * posMatrix;
 
 	// 描画ディバイスへ適用
 	Direct3D9::getInst()->device()->SetTransform(D3DTS_WORLD, &resultMatrix);
@@ -79,11 +84,11 @@ bool Mesh::draw(MeshList aMeshList, Transform aTransform)
 	// マテリアルの数だけループ
 	for (DWORD i = 0; i < xFile->materialNum; i++)
 	{
-		// サブセットにマテリアルとテクスチャを設定。
-		Direct3D9::getInst()->device()->SetMaterial(&(xFile->materials[i]));
+		// サブセットにマテリアルとテクスチャを設定
+		Direct3D9::getInst()->device()->SetMaterial(&xFile->materials[i]);
 		Direct3D9::getInst()->device()->SetTexture(0, xFile->textures[i]);
 
-		// メッシュ・サブセットの描画。
+		// メッシュ・サブセットの描画
 		xFile->mesh->DrawSubset(i);
 	}
 
@@ -96,7 +101,6 @@ bool Mesh::draw(MeshList aMeshList, Transform aTransform)
 /// @return 読み込みに成功したかを返す
 bool Mesh::load(MeshList aMeshList)
 {
-	// 読み込むファイルパスとXファイル
 	LPCTSTR meshFilePath = mFilePath[(int)aMeshList];
 	XFileData* xFile = &mXFile[(int)aMeshList];
 
@@ -172,7 +176,6 @@ bool Mesh::load(MeshList aMeshList)
 /// @param aMeshList 破棄するメッシュ
 void Mesh::release(MeshList aMeshList)
 {
-	// 読み込むXファイル
 	XFileData* xFile = &mXFile[(int)aMeshList];
 
 	// エラーチェック
@@ -205,7 +208,6 @@ void Mesh::release(int aNum)
 	// 読み込むXファイル
 	XFileData* xFile = &mXFile[aNum];
 
-	// エラーチェック
 	if (!xFile->mesh) {
 		MessageBox(NULL, TEXT("破棄したいメッシュが見つかりませんでした。"), TEXT("MESH_ERROR"), MB_OK);
 		return;

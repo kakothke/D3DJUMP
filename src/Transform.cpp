@@ -8,7 +8,7 @@ namespace myGame {
 Transform::Transform()
 	: pos()
 	, rot()
-	, scale()
+	, scale(Vector3(1, 1, 1))
 {
 }
 

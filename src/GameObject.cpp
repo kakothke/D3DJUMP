@@ -44,13 +44,13 @@ GameObject::GameObject(Transform aTransform, GameObjectTag aTag)
 }
 
 //-------------------------------------------------------------------------------------------------
-const Transform& GameObject::transform()
+const Transform& GameObject::transform() const
 {
 	return mTransform;
 }
 
 //-------------------------------------------------------------------------------------------------
-const GameObjectTag& GameObject::tag()
+const GameObjectTag& GameObject::tag() const
 {
 	return mTag;
 }

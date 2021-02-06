@@ -41,6 +41,9 @@
     <Filter Include="MyGame\Shader">
       <UniqueIdentifier>{d22ae78c-7bc5-4671-a89f-f107dd7c980b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyGame\Debug">
+      <UniqueIdentifier>{86ba9539-2ae9-4275-a023-8436bd8739ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -170,7 +173,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader.hlsl">
+    <FxCompile Include="hlsl\Shader.hlsl">
       <Filter>MyGame\Shader</Filter>
     </FxCompile>
   </ItemGroup>

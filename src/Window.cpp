@@ -79,7 +79,7 @@ bool Window::initialize(const HINSTANCE& a_hInst)
 
 //-------------------------------------------------------------------------------------------------
 /// 作成したウィンドウハンドルを返す
-HWND Window::hWnd() const
+const HWND& Window::hWnd() const
 {
 	return m_hWnd;
 }

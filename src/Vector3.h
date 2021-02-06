@@ -13,35 +13,32 @@ public:
     /// @name コンストラクタ
     //@{
     Vector3();
-    Vector3(float aX, float aY, float aZ);
+    Vector3(float x, float y, float z);
     //@}
 
     /// @ name 演算子オーバーロード
     //@{
-    bool operator ==(const Vector3& aVec) const;
-    bool operator !=(const Vector3& aVec) const;
-
-    void operator +=(float aNum);
-    void operator -=(float aNum);
-    void operator *=(float aNum);
-    void operator /=(float aNum);
-
-    void operator +=(const Vector3& aVec);
-    void operator -=(const Vector3& aVec);
-    void operator *=(const Vector3& aVec);
-    void operator /=(const Vector3& aVec);
-
     Vector3 operator -() const;
+    Vector3 operator +(float aValue) const;
+    Vector3 operator -(float aValue) const;
+    Vector3 operator *(float aValue) const;
+    Vector3 operator /(float aValue) const;
+    Vector3 operator +(const Vector3& aVector) const;
+    Vector3 operator -(const Vector3& aVector) const;
+    Vector3 operator *(const Vector3& aVector) const;
+    Vector3 operator /(const Vector3& aVector) const;
 
-    Vector3 operator +(float aNum) const;
-    Vector3 operator -(float aNum) const;
-    Vector3 operator *(float aNum) const;
-    Vector3 operator /(float aNum) const;
+    bool operator ==(const Vector3& aVector) const;
+    bool operator !=(const Vector3& aVector) const;
 
-    Vector3 operator +(const Vector3& aVec) const;
-    Vector3 operator -(const Vector3& aVec) const;
-    Vector3 operator *(const Vector3& aVec) const;
-    Vector3 operator /(const Vector3& aVec) const;
+    void operator +=(float aValue);
+    void operator -=(float aValue);
+    void operator *=(float aValue);
+    void operator /=(float aValue);
+    void operator +=(const Vector3& aVector);
+    void operator -=(const Vector3& aVector);
+    void operator *=(const Vector3& aVector);
+    void operator /=(const Vector3& aVector);
     //@}
 
     /// @name メンバ変数
@@ -60,11 +57,11 @@ public:
     //@ name 変換関数
     //@{
     /// ベクトルの長さを返す
-    static float Magnitude(Vector3 aVec);
+    static float Magnitude(Vector3 aVector);
     /// 長さを1に変換したベクトルを返す
-    static Vector3 Normalized(Vector3 aVec);
+    static Vector3 Normalized(Vector3 aVector);
     /// D3DXVECTOR3型に変換して返す
-    static const D3DXVECTOR3& D3DXVECTOR3(Vector3 aVec);
+    static const D3DXVECTOR3& D3DXVECTOR3(Vector3 aVector);
     //@}
 
 private:

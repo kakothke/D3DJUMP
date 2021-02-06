@@ -28,8 +28,8 @@ public:
 
 	/// @name アクセサ
 	//@{
-	const Transform& transform();
-	const GameObjectTag& tag();
+	const Transform& transform() const;
+	const GameObjectTag& tag() const;
 	//@}
 
 protected:
