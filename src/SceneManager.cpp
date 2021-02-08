@@ -13,6 +13,8 @@ namespace myGame {
 //-------------------------------------------------------------------------------------------------
 /// コンストラクタ
 SceneManager::SceneManager()
+	: mSceneStack()
+	, mFps()
 {
 	// テストシーンをプッシュ
 	mSceneStack.push(std::make_shared<TestScene>(this));
@@ -30,14 +32,19 @@ SceneManager::~SceneManager()
 
 //-------------------------------------------------------------------------------------------------
 /// 動作
-void SceneManager::run() const
+void SceneManager::run()
 {
 	Direct3D9::getInst()->drawStart();
 
+	// シーン処理
 	if (!mSceneStack.empty()) {
 		mSceneStack.top()->update();
 		mSceneStack.top()->draw();
 	}
+
+	// fpsを調整する
+	mFps.adjust();
+	mFps.draw();
 
 	Direct3D9::getInst()->drawEnd();
 }

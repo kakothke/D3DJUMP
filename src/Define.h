@@ -27,6 +27,8 @@ public:
     const static bool WindowModeFlag = true;
     /// 画面クリア色
     const static D3DCOLOR ClearColor = D3DCOLOR_XRGB(0, 0, 64);
+    /// 視野角
+    const static float Zoom;
     //@}
 
     /// @name ゲーム設定

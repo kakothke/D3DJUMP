@@ -4,7 +4,6 @@
 #include "d3d9.h"
 #include "d3dx9.h"
 #include "SceneManager.h"
-#include "Fps.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
@@ -26,8 +25,8 @@ public:
 private:
 	/// @name プライベートメンバ変数
 	//@{
+	/// シーン管理
 	SceneManager mSceneManager;
-	Fps mFps;
 	//@}
 
 };

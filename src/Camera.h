@@ -14,6 +14,8 @@ public:
 	//@{
 	Camera();
 	Camera(Transform aTransform);
+	Camera(float aZoom);
+	Camera(Transform aTransform, float aZoom);
 	//@}
 	
 	/// @name 更新/描画
@@ -26,7 +28,7 @@ protected:
 	/// @name 内部実装関数
 	//@{
 	/// 射影
-	void setUpViewMatrix();
+	void setViewMatrix();
 	/// 指定した位置を向く
 	void lookAt(Vector3 aPos);
 	//@}
@@ -35,8 +37,10 @@ protected:
 	//@{
 	/// 注視点
 	Vector3 mLookPos;
+	// / 視野角
+	float mZoom;
 	/// 注視中
-	bool mIslook;
+	bool mIslookAt;
 	//@}
 
 };

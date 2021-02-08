@@ -2,6 +2,7 @@
 
 //-------------------------------------------------------------------------------------------------
 #include "Direct3D9.h"
+#include "Define.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
@@ -10,7 +11,8 @@ namespace myGame {
 /// コンストラクタ
 Camera::Camera() : GameObject(GameObjectTag::Camera)
 , mLookPos()
-, mIslook(false)
+, mZoom(Define::Zoom)
+, mIslookAt(false)
 {
 	mTransform.pos = Vector3(0, 0, -10);
 }
@@ -19,7 +21,23 @@ Camera::Camera() : GameObject(GameObjectTag::Camera)
 /// 引数付きコンストラクタ
 Camera::Camera(Transform aTransform) : GameObject(aTransform, GameObjectTag::Camera)
 , mLookPos()
-, mIslook(false)
+, mZoom(Define::Zoom)
+, mIslookAt(false)
+{
+}
+
+Camera::Camera(float aZoom) : GameObject(GameObjectTag::Camera)
+, mLookPos()
+, mZoom(aZoom)
+, mIslookAt(false)
+{
+	mTransform.pos = Vector3(0, 0, -10);
+}
+
+Camera::Camera(Transform aTransform, float aZoom) : GameObject(aTransform, GameObjectTag::Camera)
+, mLookPos()
+, mZoom(aZoom)
+, mIslookAt(false)
 {
 }
 
@@ -27,28 +45,25 @@ Camera::Camera(Transform aTransform) : GameObject(aTransform, GameObjectTag::Cam
 /// 更新
 void Camera::update()
 {
-	setUpViewMatrix();
+	setViewMatrix();
 }
 
 //-------------------------------------------------------------------------------------------------
 /// セットする
-void Camera::setUpViewMatrix()
+void Camera::setViewMatrix()
 {
 	// カメラ位置
 	D3DXVECTOR3 cameraPos = Vector3Math::D3DXVECTOR3(mTransform.pos);
 
 	// 注視点
-	if (!mIslook) {
-		mLookPos = mTransform.pos + mTransform.rot;
-		mLookPos.z = 1;
-		mIslook = false;
+	if (!mIslookAt) {
+		mLookPos = mTransform.rot;
+		mIslookAt;
 	}
 	D3DXVECTOR3 lookPos = Vector3Math::D3DXVECTOR3(mLookPos);
 
-	// 上方向のベクトル
-	D3DXVECTOR3 upVec;
-
-	Direct3D9::getInst()->setUpViewMatrix(cameraPos, lookPos, upVec);
+	// 投影
+	Direct3D9::getInst()->setViewMatrix(cameraPos, lookPos, mZoom);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -57,7 +72,7 @@ void Camera::setUpViewMatrix()
 void Camera::lookAt(Vector3 aPos)
 {
 	mLookPos = aPos;
-	mIslook = true;
+	mIslookAt = true;
 }
 
 } // namespace

@@ -38,7 +38,7 @@ public:
 
 	/// @name カメラ
 	//@{
-	void setUpViewMatrix(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos, D3DXVECTOR3 aUpVec);
+	void setViewMatrix(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos, float aZoom);
 	//@}
 
 	/// @name アクセサ

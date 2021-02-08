@@ -97,6 +97,9 @@
     <ClCompile Include="src\Transform.cpp">
       <Filter>MyGame\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\DebugFont.cpp">
+      <Filter>MyGame\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Define.h">
@@ -170,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="src\Transform.h">
       <Filter>MyGame\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DebugFont.h">
+      <Filter>MyGame\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

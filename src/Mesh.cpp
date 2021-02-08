@@ -22,6 +22,9 @@ Mesh::Mesh()
 	mFilePath[(int)MeshList::TestMan] = TEXT("res/mesh/Sample01.x");
 	mFilePath[(int)MeshList::TestPlane] = TEXT("res/mesh/f-mine.x");
 
+	// テスト用ロード
+	load(MeshList::TestMan);
+	load(MeshList::TestPlane);
 }
 
 //-------------------------------------------------------------------------------------------------

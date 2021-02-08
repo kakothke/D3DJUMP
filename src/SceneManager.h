@@ -7,6 +7,7 @@
 #include "SceneList.h"
 #include "IOnSceneChangedListener.h"
 #include "AbstractScene.h"
+#include "Fps.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame{
@@ -23,7 +24,7 @@ public:
 
 	/// @name 動作
 	//@{
-	void run() const;
+	void run();
 	//@}
 
 	/// @name シーン遷移
@@ -36,6 +37,8 @@ private:
 	//@{
 	/// シーンのスタック
 	std::stack<std::shared_ptr<AbstractScene>> mSceneStack;
+	/// fps制御クラス
+	Fps mFps;
 	//@}
 
 };

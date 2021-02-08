@@ -2,6 +2,8 @@
 
 //-------------------------------------------------------------------------------------------------
 #include "Define.h"
+#include "DebugFont.h"
+#include <tchar.h>
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
@@ -52,6 +54,9 @@ void Fps::adjust()
 /// Œ»Ý‚Ìfps‚ð•`‰æ‚·‚é
 void Fps::draw() const
 {
+	TCHAR debugText[20];
+	_stprintf_s(debugText, 20, _T("%2.0ffps"), mFps);
+	DebugFont::getInst()->draw(debugText, 170, 50);
 }
 
 } // namespace

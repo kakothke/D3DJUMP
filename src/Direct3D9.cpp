@@ -92,28 +92,39 @@ void Direct3D9::drawEnd()
 }
 
 //-------------------------------------------------------------------------------------------------
-/// トランスフォームのセットアップ
+/// トランスフォームのセット
 /// @param aCameraPos カメラの位置
 /// @param aLookPos 注視点
-/// @param aUpVec 上方向のベクトル
-void Direct3D9::setUpViewMatrix(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos, D3DXVECTOR3 aUpVec)
+/// @param aZoom 視野角
+void Direct3D9::setViewMatrix(D3DXVECTOR3 aCameraPos, D3DXVECTOR3 aLookPos, float aZoom)
 {
 	// ビューポート
 	D3DVIEWPORT9 vp;
 	mD3DDevice->GetViewport(&vp);
 	float aspect = (float)vp.Width / (float)vp.Height;
 
-	// 視界
-	D3DXMATRIXA16 matView;
-	D3DXVECTOR3 upVec(0.0f, 1.0f, 0.0f);
-	D3DXMatrixLookAtLH(&matView, &aCameraPos, &aLookPos, &upVec);
+	// ビュートランスフォーム
+	{
+		D3DXMATRIX matrix;
+		D3DXMatrixRotationYawPitchRoll(&matrix, aLookPos.y, aLookPos.x, aLookPos.z);
 
-	// ビューマトリクスの設定
-	mD3DDevice->SetTransform(D3DTS_VIEW, &matView);
+		// x,y軸回転
+		D3DXVECTOR3 lookPos(0, 0, 1);
+		D3DXVec3TransformCoord(&lookPos, &lookPos, &matrix);
+		lookPos += aCameraPos;
 
-	// デバイスに対して、投影行列を設定。
+		// z軸回転
+		D3DXVECTOR3 upVec(0, 1, 0);
+		D3DXVec3TransformCoord(&upVec, &upVec, &matrix);
+
+		D3DXMATRIXA16 matView;
+		D3DXMatrixLookAtLH(&matView, &aCameraPos, &lookPos, &upVec);
+		mD3DDevice->SetTransform(D3DTS_VIEW, &matView);
+	}
+
+	// プロジェクショントランスフォーム（射影変換）
 	D3DXMATRIXA16 matProj;
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(45), aspect, 1.0f, 2000.0f);
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DX_PI / aZoom, aspect, 1.0f, 2000.0f);
 	mD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
 }
 

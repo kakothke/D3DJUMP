@@ -4,6 +4,8 @@
 #include "Direct3D9.h"
 #include "Mesh.h"
 #include "Define.h"
+#include "Mesh.h"
+#include "DebugFont.h"
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
@@ -12,8 +14,10 @@ namespace myGame {
 /// コンストラクタ
 Game::Game()
 	: mSceneManager()
-	, mFps()
 {
+	// シングルトンクラスを生成
+	Mesh::getInst();
+	DebugFont::getInst();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -23,9 +27,6 @@ bool Game::mainLoop()
 {
 	// シーン処理
 	mSceneManager.run();
-
-	// fpsを調整する
-	mFps.adjust();
 
 	return true;
 }

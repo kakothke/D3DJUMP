@@ -22,7 +22,7 @@ TestPlane::TestPlane(Transform aTransform) : GameObject(aTransform, GameObjectTa
 /// çXêV
 void TestPlane::update()
 {
-	mTransform.pos.x += .002f;
+	mTransform.pos.x += .0001f;
 	mTransform.rot.x -= .001f;
 	mTransform.rot.y -= .001f;
 }

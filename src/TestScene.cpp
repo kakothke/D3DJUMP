@@ -1,7 +1,8 @@
 #include "TestScene.h"
 
 //-------------------------------------------------------------------------------------------------
-#include "Mesh.h"
+#include "DebugFont.h"
+#include <tchar.h>
 
 //-------------------------------------------------------------------------------------------------
 namespace myGame {
@@ -10,10 +11,6 @@ namespace myGame {
 /// コンストラクタ
 TestScene::TestScene(IOnSceneChangedListener* aImpl) : AbstractScene(aImpl)
 {
-	Mesh::getInst()->initialize();
-	Mesh::getInst()->load(MeshList::TestMan);
-	Mesh::getInst()->load(MeshList::TestPlane);
-
 	mTestPlane = TestPlane(Transform(Vector3(-2.0f, 3.0f, 6.0f), Vector3(0.0f, 2.0f, 0), Vector3(2.0f, 1.0f, 1.0f)));
 }
 
@@ -30,7 +27,7 @@ void TestScene::update()
 	mCamera.update();
 
 	mLight.update();
-	mTestMan.update();
+	//mTestMan.update();
 	mTestPlane.update();
 }
 
